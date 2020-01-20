@@ -8,21 +8,7 @@ class Employee_model extends CORE_Model {
         parent::__construct();
     }
 
-    function get_employee_list($employee_id=null){
-        $sql = "SELECT 
-                el.*,
-                CONCAT(el.last_name,', ',el.first_name,' ',el.middle_name) as full_name
-            FROM
-                employee_list el
-                WHERE el.is_deleted = FALSE
-                AND el.is_retired=FALSE
-                AND el.status = 'Active'
-                ".($employee_id==null?"":" AND el.employee_id=$employee_id")."
-                ORDER BY el.last_name";
-        return $this->db->query($sql)->result();
-    }
-
-    function getschedemployee($status,$ref_department_id=null){
+    function getschedemployee($status){
          $query = $this->db->query("SELECT 
                     employee_list.*,
                     CONCAT(employee_list.first_name,
@@ -43,7 +29,6 @@ class Employee_model extends CORE_Model {
                 WHERE
                     employee_list.is_deleted = 0
                     ".($status==0?"":" AND employee_list.is_retired=0 AND employee_list.status = 'Active' ")."
-                    ".($ref_department_id==null?"":" AND emp_rates_duties.ref_department_id=$ref_department_id")."
                 ORDER BY employee_list.last_name, ref_department.department ASC");
                 return $query->result();
     }

@@ -80,9 +80,6 @@
         .hr-email-title{
             margin-top: 20px !important;
         }
-        .red{
-            color: red;
-        }
 
     </style>
 
@@ -180,7 +177,7 @@
                                 <div class="row">
                               <div class="col-md-8" style="margin-bottom: 20px;">
                                 <div class="form-group">
-                                        <label class="col-sm-4 inlinecustomlabel-sm" for="inputEmail1">Username : <span class="red">*</span> </label>
+                                        <label class="col-sm-4 inlinecustomlabel-sm" for="inputEmail1">Username :</label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                                 <span class="input-group-addon">
@@ -191,14 +188,14 @@
                                         </div>
                                 </div>
                                 <div class="form-group">
-                                        <label class="col-sm-4 inlinecustomlabel-sm" for="inputEmail1">User Group : <span class="red">*</span></label>
+                                        <label class="col-sm-4 inlinecustomlabel-sm" for="inputEmail1">User Type :</label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                                 <span class="input-group-addon">
                                                                    <i class="fa fa-list" aria-hidden="true"></i>
                                                                 </span>
                                                                <select class="form-control" name="user_group_id" id="user_group_id" data-error-msg="User group is required." required>
-                                                               <option value="">Select User Group</option>
+                                                               <option value="0">[ Select User Group ]</option>
                                                                <?php foreach($user_groups as $group){ ?>
                                                                         <option value="<?php echo $group->user_group_id; ?>"><?php echo $group->user_group; ?></option>
                                                                <?php } ?>
@@ -206,27 +203,8 @@
                                                            </div>
                                         </div>
                                 </div>
-
-                                <div class="form-group">
-                                        <label class="col-sm-4 inlinecustomlabel-sm" for="inputEmail1">Department : <span class="red">*</span></label>
-                                        <div class="col-sm-8">
-                                            <div class="input-group">
-                                                                <span class="input-group-addon">
-                                                                   <i class="fa fa-list" aria-hidden="true"></i>
-                                                                </span>
-                                                               <select class="form-control" name="ref_department_id" id="ref_department_id" data-error-msg="Department is required." required>
-                                                               <option value="">Select Department</option>
-                                                               <?php foreach($departments as $department){ ?>
-                                                                        <option value="<?php echo $department->ref_department_id; ?>">
-                                                                            <?php echo $department->department; ?>
-                                                                        </option>
-                                                               <?php } ?>
-                                                           </select>
-                                                           </div>
-                                        </div>
-                                </div>
                                 <div class="form-group" id="password">
-                                        <label class="col-sm-4 inlinecustomlabel-sm" for="inputEmail1">Password : <span class="red">*</span></label>
+                                        <label class="col-sm-4 inlinecustomlabel-sm" for="inputEmail1">Password :</label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                                 <span class="input-group-addon">
@@ -237,7 +215,7 @@
                                         </div>
                                 </div>
                                 <div class="form-group" id="confpassword">
-                                        <label class="col-sm-4 inlinecustomlabel-sm" for="inputEmail1">Confirm Password : <span class="red">*</span></label>
+                                        <label class="col-sm-4 inlinecustomlabel-sm" for="inputEmail1">Confirm Password :</label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                                 <span class="input-group-addon">
@@ -250,7 +228,7 @@
                                         </div>
                                 </div>
                                 <div class="form-group">
-                                        <label class="col-sm-4 inlinecustomlabel-sm" for="inputEmail1">First Name : <span class="red">*</span></label>
+                                        <label class="col-sm-4 inlinecustomlabel-sm" for="inputEmail1">First Name :</label>
                                         <div class="col-sm-8">
                                             <div class="input-group">
                                                                 <span class="input-group-addon">
@@ -278,7 +256,7 @@
                                                                 <span class="input-group-addon">
                                                                     <i class="fa fa-users"></i>
                                                                 </span>
-                                                               <input type="text" name="user_lname" class="form-control" placeholder="Lastname" data-error-msg="Lastname is required!">
+                                                               <input type="text" name="user_lname" class="form-control" placeholder="Lastname" data-error-msg="Lastname is required!" required>
                                                            </div>
                                         </div>
                                 </div>
@@ -329,7 +307,7 @@
                                                 <span class="input-group-addon">
                                                     <i class="fa fa-envelope"></i>
                                                 </span>
-                                               <input type="text" name="user_email" id="user_email" class="form-control" placeholder="Email Address" data-error-msg="Email Address is required!">
+                                               <input type="text" name="user_email" id="user_email" class="form-control" placeholder="Email Address" data-error-msg="Email Address is required!" required>
                                            </div>
                                         </div>
                                 </div>
@@ -339,7 +317,7 @@
                                     <div style="width:100%; height:300px;border:2px solid #34495e;border-radius:5px;">
                                         <center><label class="control-label boldlabel" style="text-align:center;margin-top:5px;">Employee Image</label></center>
                                         <hr style="margin-top:0px !important;height:2px;background-color:#34495e;">
-                                        <center><img name="img_user" src="assets/img/anonymous-icon.png" height="150px;"width="150px;"></img></center>
+                                        <center><img name="img_user" src="<?php echo $this->session->main_directory;?>/assets/img/anonymous-icon.png" height="150px;"width="150px;"></img></center>
                                         <hr style="margin-top:0px !important;height:2px;background-color:#34495e;"></hr>
                                         <center>
                                              <button type="button" id="btn_browse" style="width:150px;margin-bottom:5px;" class="btn btn-primary">Browse Photo</button>
@@ -402,7 +380,6 @@
 
 $(document).ready(function(){
     var dt; var _txnMode; var _selectedID; var _selectRowObj; var _ispayable=0; var _isforwardable=0;
-    var _user_group_id; var _ref_department_id;
 
     var initializeControls=function(){
         dt=$('#tbl_users').DataTable({
@@ -448,22 +425,6 @@ $(document).ready(function(){
 
         $('.numeric').autoNumeric('init');
 
-        _user_group_id=$("#user_group_id").select2({
-            dropdownParent: $("#modal_create_leave"),
-            placeholder: "Select User Group",
-            allowClear: false
-        });
-
-        _user_group_id.select2('val', null);    
-
-
-        _ref_department_id=$("#ref_department_id").select2({
-            dropdownParent: $("#modal_create_leave"),
-            placeholder: "Select Department",
-            allowClear: false
-        });
-
-        _ref_department_id.select2('val', null);            
 
     }();
 
@@ -501,20 +462,18 @@ $(document).ready(function(){
             var data=dt.row(_selectRowObj).data();
             _selectedID=data.user_id;
 
-            $('#user_group_id').val(data.user_group_id).trigger('change');
-            $('#ref_department_id').val(data.ref_department_id).trigger('change');
-
+            $('#user_group_id').val(data.user_group_id);
             $('#user_pword').val('nochanges');
             $('#user_confirm_pword').val('nochanges');
             $('.transaction_type').text('Edit');
             
-            // var main_directory = $('#main_directory').val();
+            var main_directory = $('#main_directory').val();
 
             if(data.image_name==""){
-                $('img[name="img_user"]').attr('src','assets/img/anonymous-icon.png');
+                $('img[name="img_user"]').attr('src',main_directory+'/assets/img/anonymous-icon.png');
             }
             else{
-                $('img[name="img_user"]').attr('src',data.photo_path);
+                $('img[name="img_user"]').attr('src',main_directory+'/'+data.photo_path);
             }
 
             $('input,textarea').each(function(){
@@ -553,8 +512,8 @@ $(document).ready(function(){
 
         $('#btn_remove_photo').click(function(event){
                 event.preventDefault();
-                // var main_directory = $('#main_directory').val();
-                $('img[name="img_user"]').attr('src','assets/img/anonymous-icon.png');
+                var main_directory = $('#main_directory').val();
+                $('img[name="img_user"]').attr('src',main_directory+'/assets/img/anonymous-icon.png');
             });
 
         $('input[name="file_upload[]"]').change(function(event){
@@ -595,10 +554,6 @@ $(document).ready(function(){
 
         $('#btn_new').click(function(){
             _txnMode="new";
-
-            $('#user_group_id').val(null).trigger('change');
-            $('#ref_department_id').val(null).trigger('change');
-
             $('.transaction_type').text('New');
             $('#modal_create_leave').modal('show');
             clearFields($('#frm_users'));
@@ -756,15 +711,12 @@ $(document).ready(function(){
     var clearFields=function(f){
         $('input,textarea',f).val('');
         $(f).find('input:first').focus();
-
-        _user_group_id.select2('val', null);
-        _ref_department_id.select2('val', null);
-
     };
 
 
 
     function format ( d ) {
+        var main_directory = $('#main_directory').val();
         return '<div class="container-fluid" style="margin:10px;">'+
         '<div class="col-md-12">'+
         '<h3 class="boldlabel"><span class="glyphicon glyphicon-user fa-lg"></span> ' + d.full_name+ '</h3>'+
@@ -773,7 +725,7 @@ $(document).ready(function(){
         '</div>'+ //First Row//
         '<div class="row">'+
         '<div class="col-md-3">'+
-        '<center><img class="loadingimg" style="margin-top:4px;width:150px;height:150px;" src="'+d.photo_path+'"></img></center>'+
+        '<center><img class="loadingimg" style="margin-top:4px;width:150px;height:150px;" src="'+main_directory+'/'+d.photo_path+'"></img></center>'+
         '</div>'+
         '<div class="col-md-6"><p class="nomargin"><b>Email Address</b> : '+d.user_email+'</p>'+
         '<p class="nomargin"><b>Mobile #</b> : '+d.user_mobile+'</p>'+

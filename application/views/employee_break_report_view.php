@@ -26,8 +26,6 @@
 
     <link href="assets/plugins/select2/select2.min.css" rel="stylesheet">
 
-
-    <link href="assets/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
     <?php echo $_switcher_settings; ?>
     <?php echo $_def_js_files; ?>
 
@@ -45,9 +43,7 @@
 
 
     <!-- Date range use moment.js same as full calendar plugin -->
-    <script src="assets/js/plugins/fullcalendar/moment.min.js"></script>
     <!-- Data picker -->
-    <script src="assets/js/plugins/datapicker/bootstrap-datepicker.js"></script>
 
     <!-- twitter typehead -->
     <script src="assets/plugins/twittertypehead/handlebars.js"></script>
@@ -89,45 +85,57 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading" style="background-color:#2c3e50 !important;margin-top:2px;">
                                      <center><h2 style="color:white;font-weight:300;">Employee Break Report</h2></center>
+                                     <a href="pdf/employee_break_report.pdf" target="_blank"><i class="fa fa-question-circle help" style="color: white!important; font-size: 15pt!important;float: right;margin-top: 15px!important;" data-toggle="tooltip" data-placement="top" title="Help"></i></a>
                                 </div>
                                 <div class="panel-body table-responsive" style="padding-top:8px;">
-                                    <div class="row" style="margin: 10px;">
-
-                                        <div class="col-md-3">
-                                            <label  style="float:left;margin-top:5px;font-weight: bold;" for="inputEmail1">Employee :</label>
-                                            <select class="form-control"  name="employee_filter" id="employee_filter" data-error-msg="Employee Filter is required" required>
-                                            <option value="all">All</option>
-                                            <?php
-                                                foreach($employee as $employees)
-                                                                    {
-                                                                        echo '<option value="'.$employees->employee_id .'">'.$employees->full_name.'</option>';
-                                                                    }
-                                                                    ?>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label  style="float:left;margin-top:5px;font-weight: bold;" for="inputEmail1">Pay Period Year :</label>
-                                            <select class="form-control" style="margin-left: 20px;" name="pay_period_filter" id="pay_period_filter" data-error-msg="Pay Period Filter is required" required>
-                                                <option value="">Select Pay Period</option>
-                                            <?php
-                                                foreach($payperiod as $periods)
-                                                                    {
-                                                                        echo '<option value="'.$periods->pay_period_id .'">'.$periods->pay_period_start." ~ ".$periods->pay_period_end.'</option>';
-                                                                    }
-                                                                    ?>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label  style="float:left;margin-top:5px;font-weight: bold;" for="inputEmail1">Schedule Date :</label>
-                                            <select class="form-control" style="margin-left: 20px;" name="date_filter" id="date_filter" data-error-msg="Date Filter is required" required>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn col-sm-12 form-control" id="print_breakreport" style="background-color:#27ae60;color:white;margin-top: 30px;">
-                                                <i class="fa fa-print"></i> PRINT
-                                            </button>  
-                                        </div>
-                                    </div>
+                                    <div class="row" style="padding: 10px;">
+                                        <div class="col-md-12">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label class="inlinecustomlabel-sm">Employee :</label>
+                                                    <select class="form-control" name="employee_filter" id="employee_filter" data-error-msg="Pay Period Filter is required" required>
+                                                        <?php foreach($employee as $employees){?>
+                                                          <option value="<?php echo $employees->employee_id; ?>">
+                                                            <?php echo $employees->ecode.' '.$employees->full_name; ?>
+                                                          </option>
+                                                        <?php } ?>
+                                                    </select> <br/>
+                                                    <button type="button" class="btn col-sm-12 form-control" id="print_breakreport" style="background-color:#27ae60;color:white;margin-top: 10px;">
+                                                        <i class="fa fa-print"></i> PRINT
+                                                    </button>
+                                                </div>                                        
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="inlinecustomlabel-sm">Pay Period : </label>
+                                                <select class="form-control" name="pay_period_filter" id="pay_period_filter" data-error-msg="Pay Period Filter is required" required>
+                                                    <option value="">[Select Pay Period]</option>
+                                                    <?php foreach($payperiods as $payperiod){?>
+                                                      <option value="<?php echo $payperiod->pay_period_id; ?>">
+                                                        <?php echo $payperiod->period; ?>
+                                                      </option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="inlinecustomlabel-sm">Start Date :</label>
+                                                    <input type="text" class="form-control date-picker" name="start_date" id="start_date" value="<?php echo date("m/01/Y")?>">
+                                                </div>                                        
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="inlinecustomlabel-sm">End Date :</label>
+                                                    <input type="text" class="form-control date-picker" name="end_date" id="end_date" value="<?php echo date("m/t/Y")?>">
+                                                </div>  
+                                            </div>
+                                            <div class="col-md-2" style="padding-top: 20px;">
+                                                <input type="radio" name="period" id="pay_period" value="1"> 
+                                                    <label for="pay_period" style="cursor: pointer;"><b>Use Pay Period</b></label><br>
+                                                <input type="radio" name="period" id="date_filter" value="2"> 
+                                                    <label for="date_filter" style="cursor: pointer;"><b>Use Date Filter</b></label><br>
+                                            </div>
+                                        </div>   
+                                </div>
                                     <hr>
                                     <div id="breakreport_preview" style="overflow: scroll;">
                                     </div>
@@ -150,108 +158,96 @@
 <script>
 
 $(document).ready(function(){
-    var employee_filter,
-        pay_period_filter,
-        date_filter,
-        filteremployee,
-        filterpayperiod,
-        filterdate;
+
+    var employee_filter;
+    var pay_period_filter;
+    var _datefilter;
+    var filter_employee;
+    var filter_start;
+    var filter_end;
+    var stat;
 
     employee_filter=$("#employee_filter").select2({
         placeholder: "Select Employee",
         allowClear: false
     });
-
     employee_filter.select2('val', null);
 
     pay_period_filter=$("#pay_period_filter").select2({
-        placeholder: "Select Pay period",
+        placeholder: "Select Pay Period",
         allowClear: false
     });
-
     pay_period_filter.select2('val', null);
 
-    date_filter=$("#date_filter").select2({
-        placeholder: "Select Date",
-        allowClear: false
+    var d = new Date();
+
+    var getBreaks=function(){
+        var _data=$('#').serializeArray();
+        _data.push({name : "employee_id" ,value : $('#employee_filter').val()});
+        _data.push({name : "pay_period_id" ,value : $('#pay_period_filter').val()});
+        _data.push({name : "start_date" ,value : $('#start_date').val()});
+        _data.push({name : "end_date" ,value : $('#end_date').val()});
+        _data.push({name : "stat" ,value : stat});
+
+        return $.ajax({
+            "dataType":"json",
+            "type":"POST",
+            "url":"EmployeeBreakReport/schedule/employee-break-report",
+            "data":_data,
+            "beforeSend" : function(){
+                $('#breakreport_preview').html("<center><img src='assets/img/loader/preloaderimg.gif'><h3>Loading...</h3></center>");
+            }
+        });
+    };
+
+    $('input[type=radio][name=period]').on("change",function(){
+        stat = this.value;
+
+        if (stat == 1){
+            pay_period_filter.select2("val",null);
+            $('#pay_period_filter').prop("disabled",false);
+            $('.date-picker').prop("disabled",true);
+        }else{
+            $('#pay_period_filter').prop("disabled",true);
+            $('.date-picker').prop("disabled",false);
+        }
+
+        getBreaks().done(function(response){
+            $('#breakreport_preview').html(response);
+        });
+
     });
 
-    date_filter.select2('val', null);
+    $('#pay_period').trigger('click');
 
-    filteremployee = $('#employee_filter').val();
-    filterpayperiod = $('#pay_period_filter').val();
-    filterdate = $('#date_filter').val();
+    getBreaks().done(function(response){
+        $('#breakreport_preview').html(response);
+    });      
 
-        $.ajax({
-        "dataType":"html",
-        "type":"POST",
-        "url":"EmployeeBreakReport/schedule/employee-break-report/"+filteremployee+"/"+filterdate+'',
-        beforeSend : function(){
-                    $('#breakreport_preview').html("<center><img src='assets/img/loader/preloaderimg.gif'><h3>Loading...</h3></center>");
-                },
-            }).done(function(response){
-                $('#breakreport_preview').html(response);
-            });
 
+    $("#start_date").change(function(){
+        getBreaks().done(function(response){
+            $('#breakreport_preview').html(response);
+        });    
+    });
+
+    $("#end_date").change(function(){
+        getBreaks().done(function(response){
+            $('#breakreport_preview').html(response);
+        });    
+    });    
 
     $("#employee_filter").change(function(){
-
-        filteremployee = $('#employee_filter').val();
-        filterdate = $('#date_filter').val();
-
-        $.ajax({
-        "dataType":"html",
-        "type":"POST",
-        "url":"EmployeeBreakReport/schedule/employee-break-report/"+filteremployee+"/"+filterdate+'',
-        beforeSend : function(){
-                    $('#breakreport_preview').html("<center><img src='assets/img/loader/preloaderimg.gif'><h3>Loading...</h3></center>");
-                },
-            }).done(function(response){
-                $('#breakreport_preview').html(response);
-            });
+        getBreaks().done(function(response){
+            $('#breakreport_preview').html(response);
+        });    
     });
 
     $("#pay_period_filter").change(function(){
-        var data =$('#pay_period_filter option:selected').text();
-        var arr = data.split('~');
-        var dates = getDates(arr[0],arr[1]);
-        var rows=dates;
-        $("#date_filter option").remove();
-        var i;
-        for(i=0;i<rows.length;++i){
-            $("#date_filter").append('<option value="'+ rows[i] +'">'+ rows[i] +'</option>');
-        }
-        $('#date_filter').val("").trigger("change")
+        getBreaks().done(function(response){
+            $('#breakreport_preview').html(response);
+        });    
     });
-
-    $("#date_filter").change(function(){
-
-        filteremployee = $('#employee_filter').val();
-        filterdate = $('#date_filter').val();
-
-        $.ajax({
-        "dataType":"html",
-        "type":"POST",
-        "url":"EmployeeBreakReport/schedule/employee-break-report/"+filteremployee+"/"+filterdate+'',
-        beforeSend : function(){
-                    $('#breakreport_preview').html("<center><img src='assets/img/loader/preloaderimg.gif'><h3>Loading...</h3></center>");
-                },
-            }).done(function(response){
-                $('#breakreport_preview').html(response);
-            });
-    });
-
-
-    function getDates(startDate, stopDate) {
-        var dateArray = [];
-        var currentDate = moment(startDate);
-        var stopDate = moment(stopDate);
-        while (currentDate <= stopDate) {
-            dateArray.push( moment(currentDate).format('YYYY-MM-DD') )
-            currentDate = moment(currentDate).add(1, 'days');
-        }
-        return dateArray;
-    }
 
     $('#print_breakreport').click(function(event){
             showinitializeprint();

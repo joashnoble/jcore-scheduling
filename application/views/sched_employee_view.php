@@ -208,7 +208,6 @@
                                                                                 }
                                                                                 ?>
                                                           </select>
-                                                          <input type="hidden" id="is_filtered_department" value="<?php echo $this->session->is_filtered_department; ?>">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -286,10 +285,8 @@
                                     </div>
 
                                 <div class="panel-footer">
-                                  <?php if($this->session->is_filtered_department <= 0){ ?>
-                                    <button class="btn" style="background-color:#2ecc71;color:white;" id="batch_update">Batch Update</button>
-                                    <button class="btn" style="background-color:#e74c3c;color:white;" id="batch_delete">Batch Delete</button>
-                                  <?php }?>
+                                  <button class="btn" style="background-color:#2ecc71;color:white;" id="batch_update">Batch Update</button>
+                                  <button class="btn" style="background-color:#e74c3c;color:white;" id="batch_delete">Batch Delete</button>
                                 </div>
                             </div> <!--panel default -->
 
@@ -672,9 +669,7 @@
                     </table>
                   </div>
                   <div class="modal-footer">
-                    <?php if($this->session->is_filtered_department <= 0){?>
-                        <button type="button" id="btn_create_schedtemplate" class="btn btn-green">Create</button>
-                    <?php }?>
+                    <button type="button" id="btn_create_schedtemplate" class="btn btn-green">Create</button>
                     <button type="button" class="btn btn-default btndelete" data-dismiss="modal">Close</button>
                   </div>
                 </div>
@@ -2032,14 +2027,7 @@ $(document).ready(function(){
                       var shedtemplate_edit='<button class="btn btn-default btn-sm btnedit" name="edit_schedtemplate"   data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil"></i> </button>';
                       var shedtemplate_delete='<button class="btn btn-default btn-sm btndelete" name="delete_schedtemplate"  data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>';
 
-                        var is_filtered_department = $('#is_filtered_department').val();
-
-                        if(is_filtered_department <=0){
-                            return '<center>'+shedtemplate_apply+shedtemplate_edit+shedtemplate_delete+'</center>';
-                        }else{
-                            return '<center>'+shedtemplate_apply+'</center>';
-                        }
-
+                        return '<center>'+shedtemplate_apply+shedtemplate_edit+shedtemplate_delete+'</center>';
                     }
                 }
 

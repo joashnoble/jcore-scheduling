@@ -5,7 +5,7 @@
                 <div class="widget-body">
                     <div class="userinfo">
                         <div class="avatar">
-                            <img src="<?php echo $this->session->user_photo; ?>" class="img-responsive img-circle" style="height:100%;">
+                            <img src="<?php echo $this->config->item('base_urlmain').'/'.$this->session->user_photo; ?>" class="img-responsive img-circle" style="height:100%;">
                         </div>
                         <div class="info">
                             <span class="username"><?php echo $this->session->user_fullname; ?></span>
@@ -36,23 +36,17 @@
                         <li class="right_schedholidaysetup_view"><a href="SchedHolidaySetup" class="" id="departmentjs"><i class="fa fa-calendar-o"></i> Yearly Holiday Setup</a>
                         </li>
                         <li class="right_override_time_view"><a href="OverrideTime" class="" id="departmentjs"><i class="fa fa-clock-o"></i> Override Time In/Out</a>
-                        </li>    
+                        </li>
                         <li class="right_scheduling_view"><a href="javascript:void();"><i class="fa fa-files-o" aria-hidden="true"></i><span>Schedule Reports</span></a>
                             <ul class="acc-menu">
-                                <li class="right_scheddtrdetailed_view"><a href="SchedDtrDetailed" class="" id="departmentjs">Schedule DTR Detailed</a></li>
-                                <li class="right_scheddtr_view"><a href="SchedDTR" class="" id="departmentjs">Schedule DTR</a></li>
-                                <li class="right_employee_sched_view"><a href="EmployeeScheduleReport" class="" id="departmentjs">Employee Schedule Report</a></li>
+                                <li class="right_scheddtrdetailed_view"><a href="SchedDtrDetailed" class="" id="departmentjs">Schedule DTR Detailed</a>
+                                </li>
+                                <li class="right_scheddtr_view"><a href="SchedDTR" class="" id="departmentjs">Schedule DTR</a>
+                                </li>
+                                <li class="right_employee_sched_view"><a href="EmployeeScheduleReport" class="" id="departmentjs">Employee Schedule Report</a>
+                                </li>
                                 <li class="right_employeeactual_view"><a href="EmployeeActualTime" class="" id="departmentjs">Employee Actual Time</a></li>
                                 <li class="right_employeebreakreport_view"><a href="EmployeeBreakReport" class="" id="departmentjs">Employee Break Report</a></li>
-                            </ul>
-                        </li>
-                        <li class="right_schedule_gantts_view"><a href="javascript:void();"><i class="fa fa-bar-chart" aria-hidden="true"></i><span>Schedule Gantts</span></a>
-                            <ul class="acc-menu">
-                                <li class="right_dailymanpower_schedule_view"><a href="Daily_schedule" class="" id="departmentjs">Daily Manpower Schedule</a></li>
-                                <li class="right_emp_sched_gantt_view"><a href="Employee_schedule_gantt" class="">Schedule Gantt</a></li>
-                                <li class="right_schedule_period_view"><a href="PeriodSchedule" class="" id="departmentjs">Employee Period Schedule</a></li>
-                                <li class="right_daily_shift_schedule_view"><a href="DailyShiftSchedule" class="" id="departmentjs">Daily Shift Schedule</a></li>
-                                <li class="right_schedule_demography_view"><a href="SchedDemography" class="" id="departmentjs">Schedule Demography</a></li>
                             </ul>
                         </li>
                         <li class="right_adminparent_view"><a href="javascript:void();"><i class="fa fa-cog" aria-hidden="true"></i><span>Settings</span></a>

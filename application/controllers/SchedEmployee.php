@@ -32,15 +32,8 @@ class SchedEmployee extends CORE_Controller
         $data['loader'] = $this->load->view('template/elements/loader', '', TRUE);
         $data['loaderscript'] = $this->load->view('template/elements/loaderscript', '', TRUE);
         $data['ref_group']=$this->RefGroup_model->get_list(array('refgroup.is_deleted'=>FALSE));
-
-        if($this->session->is_filtered_department == 1){
-            $data['employee_list']=$this->Employee_model->getschedemployee(1,$this->session->user_ref_department_id);
-            $data['employee_list1']=$this->Employee_model->getschedemployee(1,$this->session->user_ref_department_id);
-        }else{
-            $data['employee_list']=$this->Employee_model->getschedemployee(1);
-            $data['employee_list1']=$this->Employee_model->getschedemployee(1);
-        }
-
+        $data['employee_list']=$this->Employee_model->getschedemployee(1);
+        $data['employee_list1']=$this->Employee_model->getschedemployee(1);
         $data['pay_period']=$this->RefPayPeriod_model->get_list(
             array('refpayperiod.is_deleted'=>FALSE),
             'refpayperiod.*',

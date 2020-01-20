@@ -24,22 +24,8 @@ class Users_model extends CORE_Model{
 
     }
 
-    function get_user_information($user_id){
-        $query = $this->db->query('SELECT dtr_id FROM daily_time_record WHERE employee_id='.$employee_id.' AND pay_period_id='.$pay_period_id.' ');
-        return $query->result();
-    }
-
-
-    function ifexistdtr($employee_id,$pay_period_id) {
-        $query = $this->db->query('SELECT dtr_id FROM daily_time_record WHERE employee_id='.$employee_id.' AND pay_period_id='.$pay_period_id.' ');
-                            $query->result();
-
-                          return $query->result();
-    }
-
-
     function authenticate_user($uname,$pword){
-        $this->db->select('ua.user_id,ua.user_name,ua.user_group_id,ua.ref_department_id,ug.is_filtered_department,ua.session_status,ua.photo_path,ua.user_email,CONCAT_WS(" ",ua.user_fname,ua.user_mname,ua.user_lname) as user_fullname,ur.*');
+        $this->db->select('ua.user_id,ua.user_name,ua.user_group_id,ua.session_status,ua.photo_path,ua.user_email,CONCAT_WS(" ",ua.user_fname,ua.user_mname,ua.user_lname) as user_fullname,ur.*');
         $this->db->from('user_accounts as ua');
         $this->db->join('user_groups as ug', 'ua.user_group_id = ug.user_group_id','left');
         $this->db->join('user_rights as ur', 'ug.user_group_id = ur.user_group_id','left');
@@ -77,7 +63,7 @@ class Users_model extends CORE_Model{
 
     function get_user_list($id=null){
 
-        $this->db->select('ua.user_id,ua.user_name,ua.user_lname,ua.user_fname,ua.user_mname,ua.photo_path,ua.ref_department_id');
+        $this->db->select('ua.user_id,ua.user_name,ua.user_lname,ua.user_fname,ua.user_mname,ua.photo_path');
         $this->db->select('ua.user_address,ua.user_email,ua.user_mobile,ua.user_telephone');
         $this->db->select('DATE_FORMAT(ua.user_bdate,"%m/%d/%Y")as user_bdate,ua.user_group_id');
         $this->db->select('ua.is_active,ug.user_group,CONCAT(ua.user_fname," ",ua.user_mname," ",ua.user_lname)as full_name');
@@ -100,15 +86,14 @@ class Users_model extends CORE_Model{
                                         //it will return whether it is true or false
     }
 
-    function check_username($user_name,$user_id){
-        $query=$this->db->query("SELECT * FROM user_accounts WHERE user_name ='$user_name' AND user_id !=".$user_id);
-        return $query->result();
-    }
 
-    function check_password($user_pword,$user_id){
-        $query=$this->db->query("SELECT * FROM user_accounts WHERE user_pword='".sha1($user_pword)."' AND user_id =".$user_id);
-        return $query->result();
-    }
+
+
+
 
 }
+
+
+
+
 ?>

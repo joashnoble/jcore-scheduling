@@ -421,11 +421,6 @@
         echo ($this->session->right_duration_delete==0 || NULL ? '<script> var right_duration_delete=" "; </script>' : '');
 
         echo ($this->session->right_expiringpersonnel_view==0 || NULL ? '<script> $(".right_expiringpersonnel_view").remove(); </script>' : '');
+
         echo ($this->session->right_employeebreakreport_view==0 || NULL ? '<script> $(".right_employeebreakreport_view").remove(); </script>' : '');
-        
-        echo ($this->session->right_schedule_gantts_view==0 || NULL ? '<script> $(".right_schedule_gantts_view").remove(); </script>' : '');
-        echo ($this->session->right_dailymanpower_schedule_view==0 || NULL ? '<script> $(".right_dailymanpower_schedule_view").remove(); </script>' : '');
-        echo ($this->session->right_emp_sched_gantt_view==0 || NULL ? '<script> $(".right_emp_sched_gantt_view").remove(); </script>' : '');
-        echo ($this->session->right_schedule_period_view==0 || NULL ? '<script> $(".right_schedule_period_view").remove(); </script>' : '');
-        echo ($this->session->right_daily_shift_schedule_view==0 || NULL ? '<script> $(".right_daily_shift_schedule_view").remove(); </script>' : '');
 ?>

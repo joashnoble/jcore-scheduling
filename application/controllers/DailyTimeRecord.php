@@ -596,7 +596,6 @@ class DailyTimeRecord extends CORE_Controller
                     $spe_hol = $this->input->post('spe_hol', TRUE);
                     $sun_reg_hol = $this->input->post('sun_reg_hol', TRUE);
                     $sun_spe_hol = $this->input->post('sun_spe_hol', TRUE);
-                    $days_with_pay = $this->input->post('days_with_pay', TRUE);
                     $minutes_late = $this->input->post('minutes_late', TRUE);
                     $minutes_undertime = $this->input->post('minutes_undertime', TRUE);
                     $minutes_excess_break = $this->input->post('minutes_excess_break', TRUE);
@@ -654,7 +653,6 @@ class DailyTimeRecord extends CORE_Controller
                         $m_daily_time_record->spe_hol = $this->get_numeric_value($spe_hol[$i]);
                         $m_daily_time_record->sun_reg_hol = $this->get_numeric_value($sun_reg_hol[$i]);
                         $m_daily_time_record->sun_spe_hol = $this->get_numeric_value($sun_spe_hol[$i]);
-                        $m_daily_time_record->days_with_pay = $this->get_numeric_value($days_with_pay[$i]);
                         $m_daily_time_record->minutes_late = $this->get_numeric_value($minutes_late[$i]);
                         $m_daily_time_record->minutes_excess_break = $this->get_numeric_value($minutes_excess_break[$i]);
                         $m_daily_time_record->minutes_undertime = $this->get_numeric_value($minutes_undertime[$i]);
@@ -691,7 +689,6 @@ class DailyTimeRecord extends CORE_Controller
 
                         $m_daily_time_record->sun_reg_hol_amt = $this->get_numeric_value($sun_reg_hol[$i])*$per_hour_pay*$factor_file[0]->sun_regular_holiday;
                         $m_daily_time_record->sun_spe_hol_amt = $this->get_numeric_value($sun_spe_hol[$i])*$per_hour_pay*$factor_file[0]->sun_spe_holiday;
-                        $m_daily_time_record->days_with_pay_amt = ($per_hour_pay)*$this->get_numeric_value($days_with_pay[$i]);
                         $m_daily_time_record->minutes_late_amt = ($per_hour_pay/60)*$this->get_numeric_value($minutes_late[$i]);
                         $m_daily_time_record->minutes_undertime_amt = ($per_hour_pay/60)*$this->get_numeric_value($minutes_undertime[$i]);
                         $m_daily_time_record->minutes_excess_break_amt = ($per_hour_pay/60)*$this->get_numeric_value($minutes_excess_break[$i]);

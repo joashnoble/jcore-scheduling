@@ -18,7 +18,6 @@ class Users extends CORE_Controller
         $this->validate_session();
         $this->load->model('Users_model');
         $this->load->model('User_groups_model');
-        $this->load->model('RefDepartment_model');
         $this->load->model('Email_user_settings_model');
     }
 
@@ -30,12 +29,10 @@ class Users extends CORE_Controller
         $data['_side_bar_navigation'] = $this->load->view('template/elements/side_bar_navigation', '', TRUE);
         $data['_top_navigation'] = $this->load->view('template/elements/top_navigation', '', TRUE);
         $data['_rights'] = $this->load->view('template/elements/rights', '', TRUE);
-        $data['loader'] = $this->load->view('template/elements/loader', '', TRUE);
+        $data['user_groups']=$this->User_groups_model->get_list(array('user_groups.is_deleted'=>FALSE));
+         $data['loader'] = $this->load->view('template/elements/loader', '', TRUE);
         $data['loaderscript'] = $this->load->view('template/elements/loaderscript', '', TRUE);
         $data['title'] = 'User Account Management';
-
-        $data['user_groups']=$this->User_groups_model->get_list(array('user_groups.is_deleted'=>FALSE));
-        $data['departments']=$this->RefDepartment_model->get_department_list();
 
         $this->load->view('users_view', $data);
     }
@@ -69,8 +66,7 @@ class Users extends CORE_Controller
                     $m_users->user_telephone=$this->input->post('user_telephone',TRUE);
                     $m_users->user_bdate=date('Y-m-d',strtotime($this->input->post('user_bdate',TRUE)));
                     $m_users->user_group_id=$this->input->post('user_group_id',TRUE);
-                    $m_users->ref_department_id=$this->input->post('ref_department_id',TRUE);
-                    $m_users->photo_path=base_url($this->input->post('photo_path',TRUE));
+                    $m_users->photo_path=$this->input->post('photo_path',TRUE);
                     $m_users->date_created = date("Y-m-d H:i:s");
                     $m_users->created_by = $this->session->user_id;
                     $m_users->save();
@@ -122,8 +118,7 @@ class Users extends CORE_Controller
                     $m_users->user_telephone=$this->input->post('user_telephone',TRUE);
                     $m_users->user_bdate=date('Y-m-d',strtotime($this->input->post('user_bdate',TRUE)));
                     $m_users->user_group_id=$this->input->post('user_group_id',TRUE);
-                    $m_users->ref_department_id=$this->input->post('ref_department_id',TRUE);
-                    $m_users->photo_path=base_url($this->input->post('photo_path',TRUE));
+                    $m_users->photo_path=$this->input->post('photo_path',TRUE);
                     $m_users->date_modified = date("Y-m-d H:i:s");
                     $m_users->modified_by = $this->session->user_id;
                     $m_users->modify($user_account_id);
@@ -151,8 +146,7 @@ class Users extends CORE_Controller
                         $m_users->user_telephone=$this->input->post('user_telephone',TRUE);
                         $m_users->user_bdate=date('Y-m-d',strtotime($this->input->post('user_bdate',TRUE)));
                         $m_users->user_group_id=$this->input->post('user_group_id',TRUE);
-                        $m_users->ref_department_id=$this->input->post('ref_department_id',TRUE);
-                        $m_users->photo_path=base_url($this->input->post('photo_path',TRUE));
+                        $m_users->photo_path=$this->input->post('photo_path',TRUE);
                         $m_users->date_modified = date("Y-m-d H:i:s");
                         $m_users->modified_by = $this->session->user_id;
                         $m_users->modify($user_account_id);
@@ -193,14 +187,14 @@ class Users extends CORE_Controller
                 $data=array();
                 $files=array();
                 // $main_directory = $this->session->main_directory;
-                $directory= 'assets/img/user/';
+                $directory= '../jcore-hris/assets/img/user/';
 
                 foreach($_FILES as $file){
 
                     $server_file_name=uniqid('');
                     $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
                     $file_path=$directory.$server_file_name.'.'.$extension;
-                    $orig_file_name=$file['name'];       
+                    $orig_file_name=$file['name'];
 
                     if(!in_array(strtolower($extension), $allowed)){
                         $response['title']='Invalid!';

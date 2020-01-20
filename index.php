@@ -1,5 +1,4 @@
 <?php
-date_default_timezone_set('Asia/Manila');
 ini_set('max_input_vars','-1');
 /**
  * CodeIgniter

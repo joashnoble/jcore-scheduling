@@ -181,22 +181,12 @@
                                             <label class="col-sm-4 inlinecustomlabel-sm" for="inputEmail1">Description :</label>
                                             <div class="col-sm-8">
                                                     <textarea name="user_group_desc" class="form-control" data-error-msg="Description is required!" required></textarea>
+
                                             </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <div class="col-sm-4"></div>
-                                        <div class="col-sm-8">
-                                            <input type="checkbox" name="is_filtered_department" id="is_filtered_department" style="width: 20px;height: 20px;"> 
-                                            <label for="is_filtered_department" style="cursor: pointer;">Is Filtered Department?</label> 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
+                            </div>
                             <hr>
                             <center><h3 class="box-title" style="font-weight:bold;">User Rights / Permissions</h3></center>
 
@@ -260,6 +250,29 @@
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i class="fa fa-cogs" aria-hidden="true"></i></span>
                                                                 <select class="form-control" name="right_employee_schedule_delete" >
+                                                                    <option value="0">Off</option>
+                                                                    <option value="1">On</option>
+                                                                </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          </div>
+                                    </div>
+                                    <div class="panel panel-default" style="margin:0px;">
+                                          <div class="panel-heading" style="background-color:white !important;padding:10px;border-bottom:3px solid #2ecc71;">
+                                            <h4 class="panel-title">
+                                              <a data-toggle="collapse" style="color:#2c3e50;" data-parent="#subaccordion" href="#rightscheduledemography"> Schedule Gant</a>
+                                            </h4>
+                                          </div>
+                                          <div id="rightscheduledemography" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3" style="margin-top:8px;" for="inputEmail1">View :</label>
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="fa fa-cogs" aria-hidden="true"></i></span>
+                                                                <select class="form-control" name="right_schedule_demography_view" >
                                                                     <option value="0">Off</option>
                                                                     <option value="1">On</option>
                                                                 </select>
@@ -466,6 +479,7 @@
                                             </div>
                                           </div>
                                     </div>
+
                                 <div class="panel panel-default" style="margin:0px;">
                                   <div class="panel-heading" style="background-color:white !important;padding:10px;border-bottom:3px solid #2ecc71;">
                                     <h4 class="panel-title">
@@ -532,7 +546,7 @@
                                                 </div>
                                             </div>
                                           </div>
-                                    </div>                    
+                                    </div>
                                     <div class="panel panel-default" style="margin:0px;">
                                           <div class="panel-heading" style="background-color:white !important;padding:10px;border-bottom:3px solid #d35400;">
                                             <h4 class="panel-title">
@@ -606,154 +620,6 @@
 
                                   </div>
                                 </div>
-
-
-                                                                <div class="panel panel-default" style="margin:0px;">
-                                  <div class="panel-heading" style="background-color:white !important;padding:10px;border-bottom:3px solid #2ecc71;">
-                                    <h4 class="panel-title">
-                                      <a data-toggle="collapse" style="color:#2c3e50;" data-parent="#accordion" href="#rightschedulinggantts">Schedule Gantts</a>
-                                    </h4>
-                                  </div>
-                                  <div id="rightschedulinggantts" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <div class="form-group">
-                                            <label class="col-sm-3" style="margin-top:8px;" for="inputEmail1">View :</label>
-                                            <div class="col-sm-9">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-cogs" aria-hidden="true"></i></span>
-                                                        <select class="form-control" name="right_schedule_gantts_view" >
-                                                            <option value="0">Off</option>
-                                                            <option value="1">On</option>
-                                                        </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="panel panel-default" style="margin:0px;">
-                                          <div class="panel-heading" style="background-color:white !important;padding:10px;border-bottom:3px solid #d35400;">
-                                            <h4 class="panel-title">
-                                              <a data-toggle="collapse" style="color:#2c3e50;" data-parent="#subaccordion" href="#rightdailyschedulemanpower"> - Daily Manpower Schedule</a>
-                                            </h4>
-                                          </div>
-                                          <div id="rightdailyschedulemanpower" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                <div class="form-group">
-                                                    <label class="col-sm-3" style="margin-top:8px;" for="inputEmail1">View :</label>
-                                                    <div class="col-sm-9">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="fa fa-cogs" aria-hidden="true"></i></span>
-                                                                <select class="form-control" name="right_dailymanpower_schedule_view" >
-                                                                    <option value="0">Off</option>
-                                                                    <option value="1">On</option>
-                                                                </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                          </div>
-                                    </div>
-                                    <div class="panel panel-default" style="margin:0px;">
-                                          <div class="panel-heading" style="background-color:white !important;padding:10px;border-bottom:3px solid #d35400;">
-                                            <h4 class="panel-title"> 
-                                              <a data-toggle="collapse" style="color:#2c3e50;" data-parent="#subaccordion" href="#rightempschedgantt"> - Employee Schedule Gantt</a>
-                                            </h4>
-                                          </div>
-                                          <div id="rightempschedgantt" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                <div class="form-group">
-                                                    <label class="col-sm-3" style="margin-top:8px;" for="inputEmail1">View :</label>
-                                                    <div class="col-sm-9">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="fa fa-cogs" aria-hidden="true"></i></span>
-                                                                <select class="form-control" name="right_emp_sched_gantt_view" >
-                                                                    <option value="0">Off</option>
-                                                                    <option value="1">On</option>
-                                                                </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                          </div>
-                                    </div>                                
-
-                                    <div class="panel panel-default" style="margin:0px;">
-                                          <div class="panel-heading" style="background-color:white !important;padding:10px;border-bottom:3px solid #d35400;">
-                                            <h4 class="panel-title">
-                                              <a data-toggle="collapse" style="color:#2c3e50;" data-parent="#subaccordion" href="#rightscheduleperiod"> - Employee Period Schedule</a>
-                                            </h4>
-                                          </div>
-                                          <div id="rightscheduleperiod" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                <div class="form-group">
-                                                    <label class="col-sm-3" style="margin-top:8px;" for="inputEmail1">View :</label>
-                                                    <div class="col-sm-9">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="fa fa-cogs" aria-hidden="true"></i></span>
-                                                                <select class="form-control" name="right_schedule_period_view" >
-                                                                    <option value="0">Off</option>
-                                                                    <option value="1">On</option>
-                                                                </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                          </div>
-                                    </div>                                    
-
-
-                                    <div class="panel panel-default" style="margin:0px;">
-                                          <div class="panel-heading" style="background-color:white !important;padding:10px;border-bottom:3px solid #d35400;">
-                                            <h4 class="panel-title">
-                                              <a data-toggle="collapse" style="color:#2c3e50;" data-parent="#subaccordion" href="#rightdailyshiftschedule"> - Daily Shift Schedule</a>
-                                            </h4>
-                                          </div>
-                                          <div id="rightdailyshiftschedule" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                <div class="form-group">
-                                                    <label class="col-sm-3" style="margin-top:8px;" for="inputEmail1">View :</label>
-                                                    <div class="col-sm-9">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="fa fa-cogs" aria-hidden="true"></i></span>
-                                                                <select class="form-control" name="right_daily_shift_schedule_view" >
-                                                                    <option value="0">Off</option>
-                                                                    <option value="1">On</option>
-                                                                </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                          </div>
-                                    </div>                                    
-
-                                    <div class="panel panel-default" style="margin:0px;">
-                                          <div class="panel-heading" style="background-color:white !important;padding:10px;border-bottom:3px solid #d35400;">
-                                            <h4 class="panel-title">
-                                              <a data-toggle="collapse" style="color:#2c3e50;" data-parent="#subaccordion" href="#rightscheduledemography"> - Schedule Demography</a>
-                                            </h4>
-                                          </div>
-                                          <div id="rightscheduledemography" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                <div class="form-group">
-                                                    <label class="col-sm-3" style="margin-top:8px;" for="inputEmail1">View :</label>
-                                                    <div class="col-sm-9">
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="fa fa-cogs" aria-hidden="true"></i></span>
-                                                                <select class="form-control" name="right_schedule_demography_view" >
-                                                                    <option value="0">Off</option>
-                                                                    <option value="1">On</option>
-                                                                </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                          </div>
-                                    </div>    
-
-                                  </div>
-                                </div>
-
-
                                 <div class="panel panel-default" style="margin:0px;">
                                   <div class="panel-heading" style="background-color:white !important;padding:10px;border-bottom:3px solid #2ecc71;">
                                     <h4 class="panel-title">
@@ -1075,13 +941,6 @@ $(document).ready(function(){
                 });
             });
 
-            if(data.is_filtered_department == 1){
-                $('#is_filtered_department').prop('checked', true);
-            }else{
-                $('#is_filtered_department').prop('checked', false);
-            }
-
-
             $('#modal_create_rights').modal('toggle');
 
             hideRatesduties();
@@ -1155,7 +1014,6 @@ $(document).ready(function(){
         $('#btn_new').click(function(){
             _txnMode="new";
             $('.transaction_type').text('New');
-            $('#is_filtered_department').prop('checked', false);
             $('#modal_create_rights').modal('show');
             clearFields($('#frm_user_group'));
         });
@@ -1243,7 +1101,6 @@ $(document).ready(function(){
 
     var createUserAccount=function(){
             var _data=$('#frm_user_group').serializeArray();
-            _data.push({name : "is_filtered_department" ,value : $('#is_filtered_department').prop("checked") ? 1 : 0});
 
             return $.ajax({
                 "dataType":"json",
@@ -1258,8 +1115,6 @@ $(document).ready(function(){
     var updateUserAccount=function(){
             var _data=$('#frm_user_group').serializeArray();
             _data.push({name : "user_group_id" ,value : _selectedID});
-            _data.push({name : "is_filtered_department" ,value : $('#is_filtered_department').prop("checked") ? 1 : 0});
-
             return $.ajax({
                 "dataType":"json",
                 "type":"POST",

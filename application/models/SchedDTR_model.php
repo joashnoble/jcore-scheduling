@@ -810,11 +810,9 @@ FROM
 				    SUM(sa.newhournsdsunday) AS newhournsdsunday,
 				    (SUM(sa.newhourregular) + SUM(sa.newhoursunday) + SUM(sa.newhourdayoff)) AS newhour,
 				    sa.payperiod,
-				    SUM(sa.breaktime) as breaktime,
 				    SUM(sa.timelate) AS timelate,
-				    SUM(sa.timeundertime) AS timeundertime,
 				    sa.break_late as excess_break,
-				    sa.days_with_pay,
+				    SUM(sa.timeundertime) AS timeundertime,
 				    SUM(sa.regular_day) AS regular_day,
 				    SUM(sa.regular_sunday) AS regular_sunday,
 				    SUM(sa.day_off) AS day_off,
@@ -837,23 +835,22 @@ FROM
 				FROM
 				    (SELECT 
 				        b.*,
-				            -- (CASE
-				            --     WHEN b.ref_day_type_id = 1 THEN b.newhourregular
-				            --     WHEN
-				            --         b.ref_day_type_id = 1
-				            --             AND DATE_FORMAT(b.clock_in, '%W') = 'Saturday'
-				            --             AND DATE_FORMAT(b.clock_out, '%W') = 'Sunday'
-				            --     THEN
-				            --         b.newhourregular
-				            --     WHEN
-				            --         b.ref_day_type_id = 2
-				            --             AND DATE_FORMAT(b.clock_in, '%W') = 'Sunday'
-				            --             AND DATE_FORMAT(b.clock_out, '%W') = 'Monday'
-				            --     THEN
-				            --         b.newhourregular
-				            --     ELSE 0.00
-				            -- END) AS regular_day,
-				            (b.newhourregular) AS regular_day,				            
+				            (CASE
+				                WHEN b.ref_day_type_id = 1 THEN b.newhourregular
+				                WHEN
+				                    b.ref_day_type_id = 1
+				                        AND DATE_FORMAT(b.clock_in, '%W') = 'Saturday'
+				                        AND DATE_FORMAT(b.clock_out, '%W') = 'Sunday'
+				                THEN
+				                    b.newhourregular
+				                WHEN
+				                    b.ref_day_type_id = 2
+				                        AND DATE_FORMAT(b.clock_in, '%W') = 'Sunday'
+				                        AND DATE_FORMAT(b.clock_out, '%W') = 'Monday'
+				                THEN
+				                    b.newhourregular
+				                ELSE 0.00
+				            END) AS regular_day,
 				            (CASE
 				                WHEN b.ref_day_type_id = 2 THEN b.newhoursunday
 				                WHEN
@@ -1103,44 +1100,8 @@ FROM
 				            t.nsd_start,
 				            t.nsd_end,
                             t.break_late,
-							(SELECT 
-					            (CASE 
-				                    WHEN 
-
-				                    (SELECT COALESCE(SUM(dtr.days_with_pay),0) FROM daily_time_record dtr 
-				                    	LEFT JOIN refpayperiod rpp ON rpp.pay_period_id = dtr.pay_period_id
-					                		WHERE dtr.employee_id = elf.employee_id AND rpp.pay_period_year = ely.year) 
-					                	>= 
-					                	COALESCE(SUM(total*erd.hour_per_day),0) THEN
-				                        0.00
-				                    ELSE
-				                        (COALESCE(SUM(total*erd.hour_per_day),0) - (SELECT COALESCE(SUM(dtr.days_with_pay),0) FROM daily_time_record dtr 
-				                    	LEFT JOIN refpayperiod rpp ON rpp.pay_period_id = dtr.pay_period_id
-					                		WHERE dtr.employee_id = elf.employee_id AND rpp.pay_period_year = ely.year))
-				                END)
-				            FROM
-				                emp_leaves_filed elf
-				                    LEFT JOIN
-				                emp_leaves_entitlement ele ON ele.emp_leaves_entitlement_id = elf.emp_leaves_entitlement_id
-				                    LEFT JOIN 
-				                emp_leave_year ely ON ely.emp_leave_year_id = elf.emp_leave_year_id
-				                    LEFT JOIN
-				                employee_list el ON el.employee_id = elf.employee_id
-				                    LEFT JOIN
-				                emp_rates_duties erd ON erd.emp_rates_duties_id = el.emp_rates_duties_id
-				            WHERE
-				                elf.is_deleted = FALSE
-				                    AND elf.employee_id = t.employee_id
-				                    AND ely.year = t.pay_period_year) as days_with_pay,
 				            CASE
-				                WHEN clock_in > (DATE_ADD(time_in, INTERVAL grace_period minute))
-				                	THEN 
-				                		(CASE
-	                						WHEN
-	                							COALESCE(TIMESTAMPDIFF(MINUTE, time_in,clock_in),0) > 0
-	                						THEN COALESCE(TIMESTAMPDIFF(MINUTE, time_in,clock_in),0)
-	                						ELSE 0.00
-	                					END)
+				                WHEN clock_in > time_in THEN TIMESTAMPDIFF(MINUTE, time_in, clock_in)
 				                ELSE 0.00
 				            END AS timelate,
 				            CASE
@@ -1149,84 +1110,30 @@ FROM
 				            END AS timeundertime,
 				            regularottime,
 				            sundayottime,
-				            (CASE
-				                WHEN 
-				                	((totalattendedhoursregular / 60) - (breaktime)) >= (totalhoursregular / 60) - (breaktime) 
-				                	THEN 
-				                		(CASE
-				                			WHEN
-				                				(COALESCE(ROUND((totalhoursregular / 60) - (breaktime), 2), 0)) > 0
-				                			THEN 
-				                				COALESCE(ROUND((totalhoursregular / 60) - (breaktime), 2), 0)
-				                			ELSE
-				                				0
-				                		END)
-				                ELSE 
-				                	(CASE
-				                		WHEN
-				                			(COALESCE(ROUND(((totalattendedhoursregular / 60) - (breaktime)), 2), 0)) > 0
-				                		THEN
-				                			COALESCE(ROUND(((totalattendedhoursregular / 60) - (breaktime)), 2), 0)
-				                		ELSE
-				                			0
-				                	END)
-				            END) AS newhourregular,
-				            (CASE
-				                WHEN 
-				                	((totalattendedhourssunday / 60) - (breaktime)) >= (totalhourssunday / 60) - (breaktime) 
-				                	THEN 
-				                		(CASE
-				                			WHEN
-				                				(COALESCE(ROUND((totalhourssunday / 60) - (breaktime), 2), 0)) > 0
-				                			THEN
-				                				COALESCE(ROUND((totalhourssunday / 60) - (breaktime), 2), 0)
-				                			ELSE
-				                				0
-				                		END)
-				                ELSE 
-				                	(CASE
-				                		WHEN
-				                			(COALESCE(ROUND(((totalattendedhourssunday / 60) - (breaktime)), 2), 0)) > 0
-				                		THEN
-				                			COALESCE(ROUND(((totalattendedhourssunday / 60) - (breaktime)), 2), 0)
-				                		ELSE
-				                			0
-				                	END)
-				            END) AS newhoursunday,
-				            CASE
-				                WHEN 
-				                	((totalattendedhoursdayoff / 60) - (breaktime)) >= (totalhoursdayoff / 60) - (breaktime) 
-				                	THEN 
-				                		(CASE
-				                			WHEN
-				                				(COALESCE(ROUND((totalhoursdayoff / 60) - (breaktime), 2), 0)) > 0
-				                			THEN
-				                				COALESCE(ROUND((totalhoursdayoff / 60) - (breaktime), 2), 0)
-				                			ELSE
-				                				0
-				                		END)
-				                ELSE 
-				                	(CASE
-				                		WHEN
-				                			(COALESCE(ROUND(((totalattendedhoursdayoff / 60) - (breaktime)), 2), 0)) > 0
-				                		THEN
-				                			COALESCE(ROUND(((totalattendedhoursdayoff / 60) - (breaktime)), 2), 0)
-				                		ELSE
-				                			0
-				                	END)
-				            END AS newhourdayoff,
 				            -- CASE
-				            --     WHEN ((totalattendedhoursregular / 60) ) >= (totalhoursregular / 60) THEN COALESCE(ROUND((totalhoursregular / 60), 2), 0)
-				            --     ELSE COALESCE(ROUND(((totalattendedhoursregular / 60)), 2), 0)
+				            --     WHEN ((totalattendedhoursregular / 60) - (breaktime)) >= (totalhoursregular / 60) - (breaktime) THEN COALESCE(ROUND((totalhoursregular / 60) - (breaktime), 2), 0)
+				            --     ELSE COALESCE(ROUND(((totalattendedhoursregular / 60) - (breaktime)), 2), 0)
 				            -- END AS newhourregular,
 				            -- CASE
-				            --     WHEN ((totalattendedhourssunday / 60)) >= (totalhourssunday / 60) THEN COALESCE(ROUND((totalhourssunday / 60), 2), 0)
-				            --     ELSE COALESCE(ROUND(((totalattendedhourssunday / 60)), 2), 0)
+				            --     WHEN ((totalattendedhourssunday / 60) - (breaktime)) >= (totalhourssunday / 60) - (breaktime) THEN COALESCE(ROUND((totalhourssunday / 60) - (breaktime), 2), 0)
+				            --     ELSE COALESCE(ROUND(((totalattendedhourssunday / 60) - (breaktime)), 2), 0)
 				            -- END AS newhoursunday,
 				            -- CASE
-				            --     WHEN ((totalattendedhoursdayoff / 60)) >= (totalhoursdayoff / 60) THEN COALESCE(ROUND((totalhoursdayoff / 60), 2), 0)
-				            --     ELSE COALESCE(ROUND(((totalattendedhoursdayoff / 60)), 2), 0)
+				            --     WHEN ((totalattendedhoursdayoff / 60) - (breaktime)) >= (totalhoursdayoff / 60) - (breaktime) THEN COALESCE(ROUND((totalhoursdayoff / 60) - (breaktime), 2), 0)
+				            --     ELSE COALESCE(ROUND(((totalattendedhoursdayoff / 60) - (breaktime)), 2), 0)
 				            -- END AS newhourdayoff,
+				            CASE
+				                WHEN ((totalattendedhoursregular / 60) ) >= (totalhoursregular / 60) THEN COALESCE(ROUND((totalhoursregular / 60), 2), 0)
+				                ELSE COALESCE(ROUND(((totalattendedhoursregular / 60)), 2), 0)
+				            END AS newhourregular,
+				            CASE
+				                WHEN ((totalattendedhourssunday / 60)) >= (totalhourssunday / 60) THEN COALESCE(ROUND((totalhourssunday / 60), 2), 0)
+				                ELSE COALESCE(ROUND(((totalattendedhourssunday / 60)), 2), 0)
+				            END AS newhoursunday,
+				            CASE
+				                WHEN ((totalattendedhoursdayoff / 60)) >= (totalhoursdayoff / 60) THEN COALESCE(ROUND((totalhoursdayoff / 60), 2), 0)
+				                ELSE COALESCE(ROUND(((totalattendedhoursdayoff / 60)), 2), 0)
+				            END AS newhourdayoff,
 				            CASE
 				                WHEN
 				                    clock_in != '' AND clock_out != ''
@@ -1284,17 +1191,11 @@ FROM
 				                WHEN
 				                    (is_sunday_premium = 0 AND is_day_off = 0)
 				                THEN
-				                    -- (CASE
-				                    --     WHEN TIMESTAMPDIFF(MINUTE, clock_in, clock_out) >= TIMESTAMPDIFF(MINUTE, clock_in, time_out) 
-				                    --     	THEN TIMESTAMPDIFF(MINUTE, clock_in, time_out)
-
-				                    --     WHEN TIMESTAMPDIFF(MINUTE, clock_in, clock_out) <= TIMESTAMPDIFF(MINUTE, clock_in, time_out) 
-				                    --     	THEN TIMESTAMPDIFF(MINUTE, clock_in, clock_out)
-
-				                    --     ELSE 0.00
-				                    -- END)
-
-				                    TIMESTAMPDIFF(MINUTE, time_in, time_out)			                    
+				                    (CASE
+				                        WHEN TIMESTAMPDIFF(MINUTE, clock_in, clock_out) >= TIMESTAMPDIFF(MINUTE, clock_in, time_out) THEN TIMESTAMPDIFF(MINUTE, clock_in, time_out)
+				                        WHEN TIMESTAMPDIFF(MINUTE, clock_in, clock_out) <= TIMESTAMPDIFF(MINUTE, clock_in, time_out) THEN TIMESTAMPDIFF(MINUTE, clock_in, clock_out)
+				                        ELSE 0.00
+				                    END)
 				                ELSE 0.00
 				            END AS totalattendedhoursregular,
 				            CASE
@@ -1352,16 +1253,7 @@ FROM
 				                            TIMESTAMPDIFF(MINUTE, time_in, time_out)
 				                        ELSE 0.00
 				                    END)
-				                WHEN 
-				                	(is_sunday_premium = 0 AND is_day_off = 0) 
-				                	THEN 
-				                		(CASE
-				                			WHEN is_in = 1 AND is_out = 1
-				                				THEN
-				                					TIMESTAMPDIFF(MINUTE, time_in, time_out)
-				                				ELSE
-				                				 	0
-				                		END)
+				                WHEN (is_sunday_premium = 0 AND is_day_off = 0) THEN TIMESTAMPDIFF(MINUTE, time_in, time_out)
 				                ELSE 0.00
 				            END AS totalhoursregular,
 				            CASE
@@ -1616,17 +1508,17 @@ FROM
 				                    (is_sunday_premium = 0)
 				                THEN
 				                    (CASE
-					                    WHEN
-				                            (clock_in >= CONCAT(CAST(clock_in AS DATE), ' ', nsdsetup.nsd_start)
-				                                AND clock_out >= CONCAT(CAST(clock_out AS DATE), ' ', nsdsetup.nsd_end))
+				                        WHEN
+				                            clock_in >= CONCAT(CAST(clock_in AS DATE), ' ', nsdsetup.nsd_start)
+				                                AND clock_out <= CONCAT(CAST(clock_out AS DATE), ' ', nsdsetup.nsd_end)
 				                        THEN
 				                            CASE
-				                                WHEN (TIMESTAMPDIFF(MINUTE, time_in, CONCAT(CAST(clock_out AS DATE), ' ', nsdsetup.nsd_end)) / 60) > 0 THEN (TIMESTAMPDIFF(MINUTE, time_in, CONCAT(CAST(clock_out AS DATE), ' ', nsdsetup.nsd_end)) / 60)
+				                                WHEN (TIMESTAMPDIFF(MINUTE, clock_in, clock_out) / 60) > 0 THEN (TIMESTAMPDIFF(MINUTE, clock_in, clock_out) / 60)
 				                                ELSE 0.00
 				                            END
 				                        WHEN
 				                            clock_in >= CONCAT(CAST(clock_in AS DATE), ' ', nsdsetup.nsd_start)
-				                                AND clock_out >= CONCAT(CAST(clock_out AS DATE), ' ', nsdsetup.nsd_end)
+				                                AND clock_out <= CONCAT(CAST(clock_out AS DATE), ' ', nsdsetup.nsd_end)
 				                        THEN
 				                            CASE
 				                                WHEN
@@ -1937,26 +1829,9 @@ FROM
 				            clock_out,
 				            time_in,
 				            time_out,
-				            schedule_employee.is_in,
-				            schedule_employee.is_out,
-				            schedule_employee.grace_period,
 				            nsdsetup.nsd_start,
 				            nsdsetup.nsd_end,
-				            (CASE
-				            	WHEN schedule_employee.is_day_off = 0
-				            		THEN
-				            			(CASE
-				            				WHEN
-				            					schedule_employee.is_in = 1 AND schedule_employee.is_out = 1
-				            				THEN
-				            					(ROUND(TIME_TO_SEC(schedule_employee.break_time) / 60 / 60, 2))
-				            				ELSE
-				            					0
-				            			END)
-
-				            		ELSE
-				            			0
-				            END) as breaktime,
+				            ROUND(TIME_TO_SEC(schedule_employee.break_time) / 60 / 60, 2) AS breaktime,
 				            schedule_employee.date,
 				            schedule_employee.total,
 				            schedule_employee.ot_in,
@@ -1965,11 +1840,11 @@ FROM
 				            last_name,
 				            ref_department.ref_department_id,
 				            employee_list.ecode,
-							(SELECT SUM(COALESCE(break_late,0)) FROM employee_break 
+                            (SELECT SUM(COALESCE(break_late,0)) FROM employee_break 
                             	LEFT JOIN schedule_employee sched_emp 
                             		ON sched_emp.schedule_employee_id = employee_break.schedule_employee_id
                             		WHERE sched_emp.employee_id = schedule_employee.employee_id AND sched_emp.pay_period_id = $payperiod) as break_late,
-							refpayperiod.pay_period_year                
+							refpayperiod.pay_period_year
 				    FROM
 				        schedule_employee
 				    CROSS JOIN nsdsetup
