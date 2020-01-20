@@ -7,10 +7,10 @@ class M_pdf {
         log_message('Debug', 'mPDF class is loaded.');
     }
  
-    function load($param="A4")
+    function load($format="A4",$margin_left=13,$margin_right=13,$margin_top=13,$margin_bottom=13)
     {
         include_once APPPATH.'third_party/mpdf/mpdf.php';
 
-        return new mPDF('c',$param);
+        return new mPDF('c',$format,0, '', $margin_left, $margin_right, $margin_top, $margin_bottom);
     }
 }

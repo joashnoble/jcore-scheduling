@@ -44,21 +44,19 @@ class Employee_break_model extends CORE_Model {
         return $query->result();
     }
 
-    function get_employee($employee_id,$start_date,$end_date,$stat,$pay_period_id=null){
-        $query = $this->db->query("SELECT 
-                        break.*,
-                        sched.date,
-                        sched.day,
-                        shift.shift
-                    FROM
-                        employee_break break
-                        LEFT JOIN schedule_employee sched ON sched.schedule_employee_id = break.schedule_employee_id
-                        LEFT JOIN sched_refshift shift ON shift.sched_refshift_id = sched.sched_refshift_id
-                        WHERE sched.is_deleted = FALSE
-                            AND sched.employee_id = $employee_id
-                            ".($stat==2?" AND sched.date BETWEEN '".$start_date."' AND '".$end_date."'":" AND sched.pay_period_id='".$pay_period_id."'")."
-                            ORDER BY sched.date ASC
-                            ");
+    function get_employee($schedule_filter,$employee_id=null){
+        $query = $this->db->query("SELECT DISTINCT(schedule_employee.employee_id),
+            CONCAT(employee_list.first_name,' ',employee_list.middle_name,' ',employee_list.last_name) AS full_name
+                                    FROM
+                                        employee_break
+                                            LEFT JOIN
+                                        schedule_employee ON schedule_employee.schedule_employee_id = employee_break.schedule_employee_id
+                                            LEFT JOIN
+                                        employee_list ON employee_list.employee_id = schedule_employee.employee_id
+                                    WHERE
+                                        schedule_employee.date = '".$schedule_filter."'
+                                        ".($employee_id=='all'?"":" AND employee_list.employee_id = ".$employee_id."")."
+                                        ");
                                     return $query->result();
     }
 

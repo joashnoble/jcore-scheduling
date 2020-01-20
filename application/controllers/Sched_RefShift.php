@@ -7,9 +7,9 @@ class Sched_RefShift extends CORE_Controller
     function __construct() {
         parent::__construct('');
         $this->validate_session();
-        if($this->session->userdata('right_schedule_shifting_view') == 0 || $this->session->userdata('right_schedule_shifting_view') == null) {
-            redirect('../Dashboard');
-        }
+        // if($this->session->userdata('right_schedule_shifting_view') == 0 || $this->session->userdata('right_schedule_shifting_view') == null) {
+        //     redirect('../Dashboard');
+        // }
 
         $this->load->model('SchedRefShift_model');
         $this->load->model('Sched_shift_break_model');

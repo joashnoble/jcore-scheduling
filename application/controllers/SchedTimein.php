@@ -1377,43 +1377,43 @@ class SchedTimein extends CORE_Controller
                 echo json_encode($response);
             break;
             
-            case 'autotimeout' :
-              $date = date("Y-m-d");
-              $time = $date.' '.date("H:i:s");
-              $pay_period_id_Temp=$this->SchedEmployee_model->get_pay_period($date);
-              if(count($pay_period_id_Temp)!=0){
-                  $pay_period_id = $pay_period_id_Temp[0]->pay_period_id;
-                  $employee_scheds= $this->SchedEmployee_model->checkifforgottoout($pay_period_id,$date,$time);
-                  if(count($employee_scheds)!=0){
-                    $i=0;
-                    $updateArray = array();
-                    $createArray = array();
-                    foreach($employee_scheds as $row){
-                        $updateArray[] = array(
-                            'schedule_employee_id'=>$row->schedule_employee_id,
-                            'is_out' => 1,
-                            'clock_out' =>$row->time_out
-                        );
-                      $i++;
-                      $createArray[] = array(
-                          'employee_id'=>$row->employee_id,
-                          'date_memo' => $date,
-                          'memo_number' =>rand(1000,9999),
-                          'ref_disciplinary_action_policy_id' => 1,
-                          'ref_action_taken_id' => 1,
-                          'date_granted' => $date,
-                          'remarks' => "Failure to Clock out",
-                          'created_by' => $this->session->user_id,
-                          'date_created' => $date
-                      );
-                    }
-                    // echo json_encode($createArray);
-                    $this->db->insert_batch('emp_memo', $createArray);
-                    $this->db->update_batch('schedule_employee',$updateArray, 'schedule_employee_id');
-                  }
-              }
+            // case 'autotimeout' :
+            //   $date = date("Y-m-d");
+            //   $time = $date.' '.date("H:i:s");
+            //   $pay_period_id_Temp=$this->SchedEmployee_model->get_pay_period($date);
+            //   if(count($pay_period_id_Temp)!=0){
+            //       $pay_period_id = $pay_period_id_Temp[0]->pay_period_id;
+            //       $employee_scheds= $this->SchedEmployee_model->checkifforgottoout($pay_period_id,$date,$time);
+            //       if(count($employee_scheds)!=0){
+            //         $i=0;
+            //         $updateArray = array();
+            //         $createArray = array();
+            //         foreach($employee_scheds as $row){
+            //             $updateArray[] = array(
+            //                 'schedule_employee_id'=>$row->schedule_employee_id,
+            //                 'is_out' => 1,
+            //                 'clock_out' =>$row->time_out
+            //             );
+            //           $i++;
+            //           $createArray[] = array(
+            //               'employee_id'=>$row->employee_id,
+            //               'date_memo' => $date,
+            //               'memo_number' =>rand(1000,9999),
+            //               'ref_disciplinary_action_policy_id' => 1,
+            //               'ref_action_taken_id' => 1,
+            //               'date_granted' => $date,
+            //               'remarks' => "Failure to Clock out",
+            //               'created_by' => $this->session->user_id,
+            //               'date_created' => $date
+            //           );
+            //         }
+            //         // echo json_encode($createArray);
+            //         $this->db->insert_batch('emp_memo', $createArray);
+            //         $this->db->update_batch('schedule_employee',$updateArray, 'schedule_employee_id');
+            //       }
+            //   }
 
-            break;
+            // break;
 
                 // echo json_encode($response);
             break;

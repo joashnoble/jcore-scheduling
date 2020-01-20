@@ -52,11 +52,13 @@ class UserGroups extends CORE_Controller
                     );
                 echo json_encode($response);
                 break;
+                
             case 'create':
                 $m_user_group=$this->User_groups_model;
                 $m_user_group_rights=$this->User_rights_model;
                 $m_user_group->user_group=$this->input->post('user_group',TRUE);
                 $m_user_group->user_group_desc=$this->input->post('user_group_desc',TRUE);
+                $m_user_group->is_filtered_department=$this->input->post('is_filtered_department',TRUE);
                 $m_user_group->date_created = date("Y-m-d H:i:s");
                 $m_user_group->created_by = $this->session->user_id;
                 $m_user_group->save();
@@ -64,7 +66,7 @@ class UserGroups extends CORE_Controller
                 $user_group_id=$m_user_group->last_insert_id();
                 foreach($_POST as $key => $val)
                 {
-                    if($key=="user_group" || $key=="user_group_desc"){
+                    if($key=="user_group" || $key=="user_group_desc" || $key=="is_filtered_department"){
                         /*echo "patient";*/
                     }
                     else{
@@ -95,6 +97,7 @@ class UserGroups extends CORE_Controller
                 $user_group_id=$this->input->post('user_group_id',TRUE);
                 $m_user_group->user_group=$this->input->post('user_group',TRUE);
                 $m_user_group->user_group_desc=$this->input->post('user_group_desc',TRUE);
+                $m_user_group->is_filtered_department=$this->input->post('is_filtered_department',TRUE);
                 $m_user_group->date_modified = date("Y-m-d H:i:s");
                 $m_user_group->modified_by = $this->session->user_id;
                 $m_user_group->modify($user_group_id);
@@ -103,7 +106,7 @@ class UserGroups extends CORE_Controller
 
                 foreach($_POST as $key => $val)
                 {
-                    if($key=="user_group" || $key=="user_group_desc"){
+                    if($key=="user_group" || $key=="user_group_desc" || $key=="is_filtered_department"){
                         /*echo "patient";*/
                     }
                     else{

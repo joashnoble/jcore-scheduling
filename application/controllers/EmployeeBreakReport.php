@@ -25,7 +25,7 @@ class EmployeeBreakReport extends CORE_Controller
         $data['_rights'] = $this->load->view('template/elements/rights', '', TRUE);
         $data['loader'] = $this->load->view('template/elements/loader', '', TRUE);
         $data['loaderscript'] = $this->load->view('template/elements/loaderscript', '', TRUE);
-        $data['payperiods'] = $this->RefPayPeriod_model->get_list('refpayperiod.is_deleted=0','refpayperiod.*, CONCAT(pay_period_start," ~ ",pay_period_end) as period',null,'pay_period_start DESC');
+        $data['payperiod'] = $this->RefPayPeriod_model->get_list('refpayperiod.is_deleted=0','refpayperiod.*',null,'pay_period_start DESC');
         $data['employee'] = $this->Employee_model->get_list('employee_list.is_deleted=0 AND employee_list.is_retired=0 AND employee_list.status = "Active"','employee_list.employee_id,CONCAT(employee_list.first_name," ",middle_name," ",employee_list.last_name) as full_name, employee_list.ecode',null,'full_name ASC');
         $data['title'] = 'Employee Break Report';
 
@@ -39,49 +39,20 @@ class EmployeeBreakReport extends CORE_Controller
 
 
             case 'employee-break-report':
-                  $m_payperiod = $this->RefPayPeriod_model;
+
+                $employee_filter = $filter_value;
+                $schedule_filter = $filter_value2;
+
                   $getcompany=$this->GeneralSettings_model->get_list(
                   null,
                   'company_setup.*'
                   );
                   $data['company']=$getcompany[0];
 
-                  $employee_id = $this->input->post("employee_id",TRUE);
-                  $pay_period_id = $this->input->post("pay_period_id",TRUE);
-                  $stat = $this->input->post("stat",TRUE);
+                  $data['employee_id'] = $this->Employee_break_model->get_employee($schedule_filter,$employee_filter);
+                  $data["schedule_date"] = $schedule_filter;
 
-                  $data['start_date'] = date("m/d/Y", strtotime($this->input->post("start_date",TRUE)));
-                  $data['end_date'] = date("m/d/Y", strtotime($this->input->post("end_date",TRUE)));
-
-                  $start_date = date("Y-m-d", strtotime($this->input->post("start_date",TRUE)));
-                  $end_date = date("Y-m-d", strtotime($this->input->post("end_date",TRUE)));
-
-                  $data['period'] = "";
-
-                  if ($stat == 1){
-                    $period = $m_payperiod->get_list($pay_period_id);
-                    $pay_period_start = date("m/d/Y", strtotime($period[0]->pay_period_start));
-                    $pay_period_end = date("m/d/Y", strtotime($period[0]->pay_period_end));
-                    $data['period'] = $pay_period_start." to ".$pay_period_end;
-                  }else{
-                    $data['period'] = $data['start_date']." to ".$data['end_date'];
-                  }
-
-                  $data['emp_info']=$this->Employee_model->get_list(
-                    'employee_list.employee_id='.$employee_id,
-                    'employee_list.*,CONCAT(employee_list.first_name," ",employee_list.middle_name," ",employee_list.last_name) as full_name
-                    ,ref_branch.branch,ref_department.department',
-                    array(
-                        array('emp_rates_duties','emp_rates_duties.emp_rates_duties_id=employee_list.emp_rates_duties_id','left'),
-                        array('ref_branch','ref_branch.ref_branch_id=emp_rates_duties.ref_branch_id','left'),
-                        array('ref_department','ref_department.ref_department_id=emp_rates_duties.ref_department_id','left'),
-                        )
-                    );
-
-
-                  $data['emp_break_report'] = $this->Employee_break_model->get_employee($employee_id,$start_date,$end_date,$stat,$pay_period_id);
-                  $response = $this->load->view('template/employee_break_report_html',$data,TRUE);
-                  echo json_encode($response);
+                  echo $this->load->view('template/employee_break_report_html',$data,TRUE);
             break;
 
 

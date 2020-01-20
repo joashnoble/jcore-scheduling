@@ -46,6 +46,7 @@
 								<th>Regular Day</th>
 								<th>Regular Sunday</th>
 								<th>Rest Day</th>
+								<th>Days w/ Pay (Hrs) </th>
 								<th>Regular Holiday</th>
 								<th>Special Holiday</th>
 								<th>Sunday Reg. Holiday</th>
@@ -65,8 +66,7 @@
 							</tr>
 						</thead>
 						<tbody>
-			<?php
-								foreach($scheddtrsummary as $result){
+						<?php foreach($scheddtrsummary as $result){
 											echo "<tr>";
 											echo "<td><input type='hidden' value='".$result->employee_id."' name='employee_id[]'>".$count."</td>";
 											echo "<td>".$result->ecode."</td>";
@@ -80,6 +80,7 @@
 											echo "<td><input type='hidden' value='".$result->regular_day."' name='reg[]'><center>".number_format($result->regular_day,2)."</center></td>";
 											echo "<td><input type='hidden' value='".$result->regular_sunday."' name='sun[]'><center>".number_format($result->regular_sunday,2)."</center></td>";
 											echo "<td><input type='hidden' value='".$result->day_off."' name='day_off[]'><center>".number_format($result->day_off,2)."</center></td>";
+											echo "<td><input type='hidden' value='".$result->days_with_pay."' name='days_with_pay[]'><center>".number_format($result->days_with_pay,2)."</center></td>";
 											echo "<td><input type='hidden' value='".$result->regular_holiday."' name='reg_hol[]'><center>".number_format($result->regular_holiday,2)."</center></td>";
 											echo "<td><input type='hidden' value='".$result->special_holiday."' name='spe_hol[]'><center>".number_format($result->special_holiday,2)."</center></td>";
 											echo "<td><input type='hidden' value='".$result->sunday_regular_holiday."' name='sun_reg_hol[]'><center>".number_format($result->sunday_regular_holiday,2)."</center></td>";

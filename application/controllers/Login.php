@@ -108,11 +108,15 @@ class Login extends CORE_Controller {
 
                                 'user_id'=>$result->row()->user_id,
                                 'user_group_id'=>$result->row()->user_group_id,
+                                'is_filtered_department'=>$result->row()->is_filtered_department,
                                 'user_fullname'=>$result->row()->user_fullname,
                                 'user_email'=>$result->row()->user_email,
                                 'user_photo'=>$result->row()->photo_path,
 								'user_group_id'=>$result->row()->user_group_id,
+                                'user_ref_department_id'=>$result->row()->ref_department_id,
 
+                                'company_name'=>$m_company[0]->company_name,
+                                
                                 'right_employee_view'=>$result->row()->right_employee_view,
                                 'right_employee_create'=>$result->row()->right_employee_create,
                                 'right_employee_edit'=>$result->row()->right_employee_edit,
@@ -409,6 +413,13 @@ class Login extends CORE_Controller {
                                 'right_payroll_register_waccount_view'=>$result->row()->right_payroll_register_waccount_view,
                                 'right_payroll_register_cash_view'=>$result->row()->right_payroll_register_cash_view,
                                 'right_employeebreakreport_view'=>$result->row()->right_employeebreakreport_view,
+                                
+                                'right_schedule_gantts_view'=>$result->row()->right_schedule_gantts_view,
+
+                                'right_dailymanpower_schedule_view'=>$result->row()->right_dailymanpower_schedule_view,
+                                'right_emp_sched_gantt_view'=>$result->row()->right_emp_sched_gantt_view,
+                                'right_schedule_period_view'=>$result->row()->right_schedule_period_view,
+                                'right_daily_shift_schedule_view'=>$result->row()->right_daily_shift_schedule_view,
                             )
                         );
                         

@@ -47,8 +47,8 @@
 					<th>Day</th>
 					<th><center>Shift</center></th>
 					<th>Day Type</th>
-					<th><center>Time In</center></th>
-					<th><center>Time Out</center></th>
+					<th><center>Clock In</center></th>
+					<th><center>Clock Out</center></th>
 					<th><center>Late (Mins)</center></th>
 				</tr>
 			</thead>
@@ -73,7 +73,7 @@
 					<td class="tdstlye"><center>
 						<?php
 							if ($row->perlate > 0){
-								echo $row->perlate;
+								echo number_format($row->perlate,0);
 							}else{
 								echo '0';
 							}

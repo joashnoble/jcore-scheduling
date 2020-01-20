@@ -18,7 +18,11 @@ class RefDepartment_model extends CORE_Model {
                            		
                           return $query->result();
     }
-
+    
+    function get_department_list() {
+        $query = $this->db->query("SELECT * FROM ref_department WHERE is_deleted=FALSE ORDER BY department ASC");
+            return $query->result();
+    }   
 
 }
 ?>
