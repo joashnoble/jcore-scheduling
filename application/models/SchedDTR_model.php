@@ -875,35 +875,48 @@ FROM
 				                ELSE 0.00
 				            END) AS day_off,
 				            (CASE
-				                WHEN b.ref_day_type_id = 3 THEN b.newhourregular
+				                WHEN b.ref_day_type_id = 3 THEN b.hour_per_day
 				                WHEN
 				                    b.ref_day_type_id = 3
 				                        AND DATE_FORMAT(b.clock_in, '%W') = 'Saturday'
 				                        AND DATE_FORMAT(b.clock_out, '%W') = 'Sunday'
 				                THEN
-				                    b.newhourregular
+				                    b.hour_per_day
 				                WHEN
 				                    b.ref_day_type_id = 3
 				                        AND DATE_FORMAT(b.clock_in, '%W') = 'Sunday'
 				                        AND DATE_FORMAT(b.clock_out, '%W') = 'Monday'
 				                THEN
-				                    b.newhourregular
+				                    b.hour_per_day
 				                ELSE 0.00
 				            END) AS regular_holiday,
 				            (CASE
-				                WHEN b.ref_day_type_id = 4 THEN b.newhourregular
+				                WHEN b.ref_day_type_id = 4 THEN
+				                	(CASE
+				                		WHEN b.newhourregular > 0 
+				                			THEN (b.hour_per_day*0.3)
+				                		ELSE b.hour_per_day
+				                	END)
 				                WHEN
 				                    b.ref_day_type_id = 4
 				                        AND DATE_FORMAT(b.clock_in, '%W') = 'Saturday'
 				                        AND DATE_FORMAT(b.clock_out, '%W') = 'Sunday'
 				                THEN
-				                    b.newhourregular
+				                	(CASE
+				                		WHEN b.newhourregular > 0 
+				                			THEN (b.hour_per_day*0.3)
+				                		ELSE b.hour_per_day
+				                	END)
 				                WHEN
 				                    b.ref_day_type_id = 4
 				                        AND DATE_FORMAT(b.clock_in, '%W') = 'Sunday'
 				                        AND DATE_FORMAT(b.clock_out, '%W') = 'Monday'
 				                THEN
-				                    b.newhourregular
+				                	(CASE
+				                		WHEN b.newhourregular > 0 
+				                			THEN (b.hour_per_day*0.3)
+				                		ELSE b.hour_per_day
+				                	END)
 				                ELSE 0.00
 				            END) AS special_holiday,
 				            (CASE
@@ -1103,6 +1116,7 @@ FROM
 				            t.nsd_start,
 				            t.nsd_end,
                             t.break_late,
+                            t.hour_per_day,
 							(SELECT 
 					            (CASE 
 				                    WHEN 
@@ -1965,6 +1979,7 @@ FROM
 				            last_name,
 				            ref_department.ref_department_id,
 				            employee_list.ecode,
+				            emp_rates_duties.hour_per_day,
 							(SELECT SUM(COALESCE(break_late,0)) FROM employee_break 
                             	LEFT JOIN schedule_employee sched_emp 
                             		ON sched_emp.schedule_employee_id = employee_break.schedule_employee_id
