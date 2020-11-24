@@ -1577,6 +1577,8 @@ class SchedEmployee extends CORE_Controller
                 $m_schedule->break_time = $break_time;
                 $m_schedule->sched_refshift_id = $sched_refshift_id;
                 $m_schedule->total = $total[0]->total_hours;
+		$m_schedule->date_modified = date("Y-m-d H:i:s");
+                $m_schedule->modified_by = $this->session->user_id;
                 $m_schedule->modify($row);
 
                 $m_shift_break = $this->Sched_shift_break_model;
@@ -1590,7 +1592,7 @@ class SchedEmployee extends CORE_Controller
                     $m_breaks->sort_key = $this->get_numeric_value($breaks->sort_key);
                     $m_breaks->save();
                 }
-
+		$x++;
               }
               $response['title']='Success';
               $response['stat']='success';

@@ -38,33 +38,43 @@ class SchedEmployee_model extends CORE_Model {
 
     function get_actual_sched_list($employee_id,$start_date,$end_date,$stat,$pay_period_id=null){
             $query = $this->db->query("SELECT 
-                    schedule_employee.*,
-                    sched_refpay.schedpay,
-                    sched_refshift.shift,
-                    CONCAT(employee_list.first_name,
-                            ' ',
-                            employee_list.middle_name,
-                            ' ',
-                            employee_list.last_name) AS full_name,
-                    employee_list.ecode,
-                    COALESCE(TIMESTAMPDIFF(MINUTE,
-                                DATE_ADD(schedule_employee.time_in, INTERVAL schedule_employee.grace_period minute)
-                                ,schedule_employee.clock_in)) AS perlate,
-                    IF(schedule_employee.is_day_off = 1,
-                        'Day Off',
-                        ref_day_type.daytype) AS daytype
-                FROM
-                    schedule_employee
-                        LEFT JOIN
-                    sched_refpay ON sched_refpay.sched_refpay_id = schedule_employee.sched_refpay_id
-                        LEFT JOIN
-                    sched_refshift ON sched_refshift.sched_refshift_id = schedule_employee.sched_refshift_id
-                        LEFT JOIN
-                    employee_list ON employee_list.employee_id = schedule_employee.employee_id
-                        LEFT JOIN
-                    ref_day_type ON ref_day_type.ref_day_type_id = schedule_employee.ref_day_type_id
-                WHERE
-                    schedule_employee.is_deleted = 0
+                        schedule_employee.*,
+                        sched_refpay.schedpay,
+                        sched_refshift.shift,
+                        CONCAT(employee_list.first_name,
+                                ' ',
+                                employee_list.middle_name,
+                                ' ',
+                                employee_list.last_name) AS full_name,
+                        employee_list.ecode,
+                        COALESCE(TIMESTAMPDIFF(MINUTE,
+                                    DATE_ADD(schedule_employee.time_in,
+                                        INTERVAL schedule_employee.grace_period MINUTE),
+                                    schedule_employee.clock_in), 0) AS perlate,
+                        (CASE
+                            WHEN
+                                schedule_employee.clock_out < schedule_employee.time_out
+                            THEN
+                                TIMESTAMPDIFF(MINUTE,
+                                    schedule_employee.clock_out,
+                                    schedule_employee.time_out)
+                            ELSE 0.00
+                        END) AS perundertime,
+                        IF(schedule_employee.is_day_off = 1,
+                            'Day Off',
+                            ref_day_type.daytype) AS daytype
+                    FROM
+                        schedule_employee
+                            LEFT JOIN
+                        sched_refpay ON sched_refpay.sched_refpay_id = schedule_employee.sched_refpay_id
+                            LEFT JOIN
+                        sched_refshift ON sched_refshift.sched_refshift_id = schedule_employee.sched_refshift_id
+                            LEFT JOIN
+                        employee_list ON employee_list.employee_id = schedule_employee.employee_id
+                            LEFT JOIN
+                        ref_day_type ON ref_day_type.ref_day_type_id = schedule_employee.ref_day_type_id
+                    WHERE
+                        schedule_employee.is_deleted = 0
                         AND schedule_employee.employee_id = $employee_id
                         ".($stat==2?" AND schedule_employee.date BETWEEN '".$start_date."' AND '".$end_date."'":" AND schedule_employee.pay_period_id='".$pay_period_id."'")."
                 ORDER BY schedule_employee.date ASC");

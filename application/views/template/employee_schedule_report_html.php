@@ -38,21 +38,21 @@
 				<td><?php echo $period; ?> </td>
 			</tr>
 		</table>
-	</div>
+	</div>sadsadsad
 	<hr><br />
-		<table class="table" style="width:100%;">
+		<table class="table" style="width:100%!important;" width="100%">
 			<thead class="thead-inverse">
 				<tr>
-					<th style="width: 70px; max-width: 70px; font-size: 10pt;">Day</th>
-					<th style="width: 130px; max-width: 130px;">Date</th>
-					<th style="width: 150px; max-width: 150px;"><center>Shift</center></th>
-					<th style="width: 80px; max-width: 80px;"><center>Time Allowance</center></th>
-					<th style="width: 130px; max-width: 130px;"><center>Schedule Time In</center></th>
-					<th style="width: 130px; max-width: 130px;"><center>Schedule Time Out</center></th>
-					<th align="left" style="width: 170px; max-width: 170px;"><center>Day Type</center></th>
-					<th style="width: 150px; max-width: 150px;"><center>Clock In</center></th>
-					<th style="width: 150px; max-width: 150px;"><center>Clock Out</center></th>
-					<th style="width: 120px; max-width: 120px;"><center>Total Hours</center></th>
+					<th style="font-size: 10pt;">Day</th>
+					<th>Date</th>
+					<th><center>Shift</center></th>
+					<th><center>Time Allowance</center></th>
+					<th><center>Schedule Time In</center></th>
+					<th><center>Schedule Time Out</center></th>
+					<th>Day Type</th>
+					<th><center>Clock In</center></th>
+					<th><center>Clock Out</center></th>
+					<th><center>Total Hours</center></th>
 				</tr>
 			</thead>
 			<tbody>

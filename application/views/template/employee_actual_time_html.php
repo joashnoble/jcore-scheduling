@@ -47,19 +47,24 @@
 					<th>Day</th>
 					<th><center>Shift</center></th>
 					<th>Day Type</th>
-					<th><center>Time In</center></th>
-					<th><center>Time Out</center></th>
-					<th><center>Late (Mins)</center></th>
+					<th>Time In</th>
+					<th>Time Out</th>
+					<th style="text-align: right;width: 9%;">Late <br/>(Mins)</th>
+					<th style="text-align: right;width: 9%;">Undertime <br/>(Mins)</th>
 				</tr>
 			</thead>
 			<tbody>
 					<?php
 					$totallate = 0;
+					$totalundertime = 0;
 					if (count($emp_sched_report) == 0){?>
-						<td colspan="9"><center><strong>No Record(s)</strong></center></td>
+						<td colspan="8"><center><strong>No Record(s)</strong></center></td>
 					<?php } else foreach($emp_sched_report as $row) {
 						if ($row->perlate > 0){
 							$totallate += $row->perlate;
+						}
+						if ($row->perundertime > 0){
+							$totalundertime += $row->perundertime;
 						}
 					?>
 				<tr>
@@ -67,18 +72,17 @@
 					<td class="tdstlye"><?php echo $row->day; ?></td>
 					<td class="tdstlye"><center><?php echo $row->shift; ?></center></td>
 					<td class="tdstlye"><?php echo $row->daytype; ?></td>
-
-					<td class="tdstlye"><center><?php echo ($row->clock_in != "" && $row->clock_in != "0000-00-00 00:00:00") ? date("h:i a", strtotime($row->clock_in)) : '00:00'; ?></center></td>
-					<td class="tdstlye"><center><?php echo ($row->clock_out != "" && $row->clock_out != "0000-00-00 00:00:00") ? date("h:i a", strtotime($row->clock_out)) : '00:00'; ?></center></td>
-					<td class="tdstlye"><center>
-						<?php
-							if ($row->perlate > 0){
-								echo $row->perlate;
-							}else{
-								echo '0';
-							}
-						?>
-						</center>
+					<td class="tdstlye">
+						<?php echo ($row->clock_in != "" && $row->clock_in != "0000-00-00 00:00:00") ? date("h:i a", strtotime($row->clock_in)) : '00:00'; ?>
+					</td>
+					<td class="tdstlye">
+						<?php echo ($row->clock_out != "" && $row->clock_out != "0000-00-00 00:00:00") ? date("h:i a", strtotime($row->clock_out)) : '00:00'; ?>
+					</td>
+					<td class="tdstlye" align="right">
+						<?php if ($row->perlate > 0){ echo number_format($row->perlate,2); }else{ echo '0'; }?>
+					</td>
+					<td class="tdstlye" align="right">
+						<?php if ($row->perundertime > 0){ echo number_format($row->perundertime,2); }else{ echo '0'; } ?>
 					</td>
 				</tr>
 			<?php } ?>
@@ -86,8 +90,8 @@
 				<tr>
 					<td colspan="5"></td>
 					<td style="text-align: right;"><center><strong>Total:</strong> </center></td>
-					<td style="font-weight:bold;color:#27ae60 !important;"><center><?php echo $totallate; ?></center></td>
-					<td></td>
+					<td style="font-weight:bold;color:#27ae60 !important;" align="right"><?php echo number_format($totallate,2); ?></td>
+					<td style="font-weight:bold;color:#27ae60 !important;" align="right"><?php echo number_format($totalundertime,2); ?></td>
 				</tr>
 			<?php } ?>
 			</tbody>

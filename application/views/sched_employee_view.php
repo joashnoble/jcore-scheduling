@@ -263,17 +263,17 @@
                                             <thead>
                                                 <tr>
                                                     <th><center><input type='checkbox' id='checkall_sched' name='' value=""></center></th>
-                                                    <th></th>
+                                                    <th width="5%"></th>
                                                     <th>Day</th>
-                                                    <th>Date</th>
-                                                    <th>Time Allowance</th>
+                                                    <th width="10%">Date</th>
+                                                    <th width="5%">Time Allowance</th>
                                                     <th>Time In</th>
                                                     <th>Time Out</th>
                                                     <th>Total</th>
-                                                    <th>Shift</th>
+                                                    <th width="20%">Shift</th>
                                                     <th>IS IN?</th>
                                                     <th>IS OUT?</th>
-                                                    <th>Schedule Type</th>
+                                                    <th width="10%">Schedule Type</th>
                                                     <th>Day Type</th>
                                                     <th>Break</th>
                                                     <th width="15%"><center>Action</center></th>
@@ -1533,8 +1533,19 @@ $(document).ready(function(){
         });
 
         $('#batch_update').click(function(){
-          clearFields($('#frm_schedbatch_update'));
-          $('#modal_schedbatch_update').modal('toggle');
+            var pay_period_selected = $('#pay_period_id_dt').val();
+
+            var chkAll = $('#tbl_scheduling tbody').find('input:checkbox');
+            var checked = chkAll.filter(':checked').length;
+
+            if (checked > 0){
+                clearFields($('#frm_schedbatch_update'));
+                $('#pay_period_id_up').val(pay_period_selected).trigger("change");
+                $('#modal_schedbatch_update').modal('toggle');
+            }else{
+                showNotification({title:"Error!",stat:"error",msg:'Please select schedules you want to update.'});
+            }
+
         });
 
         $('#btn_updatesched_batch').click(function(){
