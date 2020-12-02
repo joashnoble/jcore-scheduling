@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.45.200',
+	'hostname' => 'localhost',
 	'username' => 'root',
-	'password' => 'jsoft14344',
-	'database' => 'webhris',
+	'password' => 'noble',
+	'database' => 'webhris_envy',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
