@@ -1538,8 +1538,19 @@ $(document).ready(function(){
         });
 
         $('#batch_update').click(function(){
-          clearFields($('#frm_schedbatch_update'));
-          $('#modal_schedbatch_update').modal('toggle');
+            var pay_period_selected = $('#pay_period_id_dt').val();
+
+            var chkAll = $('#tbl_scheduling tbody').find('input:checkbox');
+            var checked = chkAll.filter(':checked').length;
+
+            if (checked > 0){
+                clearFields($('#frm_schedbatch_update'));
+                $('#pay_period_id_up').val(pay_period_selected).trigger("change");
+                $('#modal_schedbatch_update').modal('toggle');
+            }else{
+                showNotification({title:"Error!",stat:"error",msg:'Please select schedules you want to update.'});
+            }
+
         });
 
         $('#btn_updatesched_batch').click(function(){

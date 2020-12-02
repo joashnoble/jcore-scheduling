@@ -178,6 +178,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <hr>
                                         <div class="scheddtrsummary_preview" style="height:800px;margin-left:20px;margin-right:20px;overflow:auto;">
                                         </div>

@@ -875,7 +875,7 @@ FROM
 				                ELSE 0.00
 				            END) AS day_off,
 				            (CASE
-				                WHEN b.ref_day_type_id = 3 THEN b.hour_per_day
+				               	WHEN b.ref_day_type_id = 3 THEN b.hour_per_day
 				                WHEN
 				                    b.ref_day_type_id = 3
 				                        AND DATE_FORMAT(b.clock_in, '%W') = 'Saturday'

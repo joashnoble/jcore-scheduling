@@ -1549,55 +1549,57 @@ class SchedEmployee extends CORE_Controller
               $updateArray = array();
               $x=0;
               foreach($schedule_employee_id as $row){
-                // if($this->input->post('sched_refshift_id', TRUE)==3){
-                //   $time_in = $date[$x].' '.$this->input->post('time_in', TRUE);
+                    // if($this->input->post('sched_refshift_id', TRUE)==3){
+                    //   $time_in = $date[$x].' '.$this->input->post('time_in', TRUE);
 
-                //   $newdate = Carbon::createFromFormat('Y-m-d', $dato)->addDay(1);
-                //   $newdate = $newdate->format('Y-m-d'); //to remove carbon generated date time
+                    //   $newdate = Carbon::createFromFormat('Y-m-d', $dato)->addDay(1);
+                    //   $newdate = $newdate->format('Y-m-d'); //to remove carbon generated date time
 
-                //   $time_out = $newdate.' '.$this->input->post('time_out', TRUE);
-                // }
-                // else{
-                //   $time_in = $date[$x].' '.$this->input->post('time_in', TRUE);
-                //   $time_out = $date[$x].' '.$this->input->post('time_out', TRUE);
-                // }
+                    //   $time_out = $newdate.' '.$this->input->post('time_out', TRUE);
+                    // }
+                    // else{
+                    //   $time_in = $date[$x].' '.$this->input->post('time_in', TRUE);
+                    //   $time_out = $date[$x].' '.$this->input->post('time_out', TRUE);
+                    // }
 
-            if ($this->input->post('time_in', TRUE) > $this->input->post('time_out', TRUE)){
-                  $time_in = $date[$x].' '.$this->input->post('time_in', TRUE);
-                  $newdate = Carbon::createFromFormat('Y-m-d', $date[$x])->addDay(1);
-                  $newdate = $newdate->format('Y-m-d'); //to remove carbon generated date time
-                  $time_out = $newdate.' '.$this->input->post('time_out', TRUE);
-            }
-            else if ($this->input->post('time_in', TRUE) < $this->input->post('time_out', TRUE)){
-                  $time_in = $date[$x].' '.$this->input->post('time_in', TRUE);
-                  $time_out = $date[$x].' '.$this->input->post('time_out', TRUE);
-            }
+                    if ($this->input->post('time_in', TRUE) > $this->input->post('time_out', TRUE)){
+                          $time_in = $date[$x].' '.$this->input->post('time_in', TRUE);
+                          $newdate = Carbon::createFromFormat('Y-m-d', $date[$x])->addDay(1);
+                          $newdate = $newdate->format('Y-m-d'); //to remove carbon generated date time
+                          $time_out = $newdate.' '.$this->input->post('time_out', TRUE);
+                    }
+                    else if ($this->input->post('time_in', TRUE) < $this->input->post('time_out', TRUE)){
+                          $time_in = $date[$x].' '.$this->input->post('time_in', TRUE);
+                          $time_out = $date[$x].' '.$this->input->post('time_out', TRUE);
+                    }
 
-                $m_breaks->delete_via_fk($row);
+                    $m_breaks->delete_via_fk($row);
 
-                $total = $this->SchedEmployee_model->get_timediff($time_in,$time_out,'00:00:00');
+                    $total = $this->SchedEmployee_model->get_timediff($time_in,$time_out,'00:00:00');
 
-                $m_schedule->pay_period_id = $pay_period_id;
-                $m_schedule->advance_in_out = $advance_in_out;
-                $m_schedule->time_in = $time_in;
-                $m_schedule->time_out = $time_out;
-                $m_schedule->break_time = $break_time;
-                $m_schedule->sched_refshift_id = $sched_refshift_id;
-                $m_schedule->total = $total[0]->total_hours;
-                $m_schedule->modify($row);
+                    $m_schedule->pay_period_id = $pay_period_id;
+                    $m_schedule->advance_in_out = $advance_in_out;
+                    $m_schedule->time_in = $time_in;
+                    $m_schedule->time_out = $time_out;
+                    $m_schedule->break_time = $break_time;
+                    $m_schedule->sched_refshift_id = $sched_refshift_id;
+                    $m_schedule->total = $total[0]->total_hours;
+                    $m_schedule->date_modified = date("Y-m-d H:i:s");
+                    $m_schedule->modified_by = $this->session->user_id;
+                    $m_schedule->modify($row);
 
-                $m_shift_break = $this->Sched_shift_break_model;
-                // Create the employee break -> applying breaks into schedules
-                $break = $m_shift_break->get_break_list($sched_refshift_id);
+                    $m_shift_break = $this->Sched_shift_break_model;
+                    // Create the employee break -> applying breaks into schedules
+                    $break = $m_shift_break->get_break_list($sched_refshift_id);
 
-                foreach ($break as $breaks) {
-                    $m_breaks->schedule_employee_id = $row;
-                    $m_breaks->break_time = $breaks->break_time;
-                    $m_breaks->break_allowance = $this->get_numeric_value($breaks->break_allowance);
-                    $m_breaks->sort_key = $this->get_numeric_value($breaks->sort_key);
-                    $m_breaks->save();
-                }
-
+                    foreach ($break as $breaks) {
+                        $m_breaks->schedule_employee_id = $row;
+                        $m_breaks->break_time = $breaks->break_time;
+                        $m_breaks->break_allowance = $this->get_numeric_value($breaks->break_allowance);
+                        $m_breaks->sort_key = $this->get_numeric_value($breaks->sort_key);
+                        $m_breaks->save();
+                    }
+                $x++;
               }
               $response['title']='Success';
               $response['stat']='success';
